@@ -49,8 +49,8 @@
 }
 
 #canvas {
-  min-height: 450px;
-  min-width: 728px;
+  min-height: 600px;
+  min-width: 971px;
   box-sizing: border-box;
   border: 1px solid red;
 }
