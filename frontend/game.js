@@ -15,7 +15,10 @@ export default class Arena {
   animate() {
 
     if (this.running) {
-      this.level.animate();
+      let time = this.level.animate();
+      if (time === 0) {
+        this.running = false;
+      }
       requestAnimationFrame(this.animate.bind(this));
     } else {
       cancelAnimationFrame(this.animationFrame);

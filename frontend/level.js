@@ -16,7 +16,7 @@ export default class Level {
   }
 
   animate() {
-    this.drawTimer();
+    return this.drawTimer();
   }
 
   drawTimer() {
