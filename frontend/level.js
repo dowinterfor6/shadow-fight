@@ -14,7 +14,8 @@ const LEVEL_CONSTANTS = {
   HEALTH_BAR: {
     width: 350,
     height: 20
-  }
+  },
+  OFFSET: 20
 };
 
 export default class Level {
@@ -22,6 +23,11 @@ export default class Level {
     this.dimensions = dimensions;
     this.time = LEVEL_CONSTANTS.MAX_TIME;
     this.ctx = ctx;
+
+    this.playerHpPos = {
+      x: this.dimensions.width / 2 - LEVEL_CONSTANTS.TIMER_RADIUS - 10,
+      y: LEVEL_CONSTANTS.TIMER_RADIUS
+    };
 
     this.drawTimerCircle = this.drawTimerCircle.bind(this);
     this.drawTimerDisplay = this.drawTimerDisplay.bind(this);
@@ -31,7 +37,8 @@ export default class Level {
 
   animate(playerHealth, botHealth) {
     let time =  this.drawTimer();
-    this.drawHealthBars(playerHealth, botHealth);
+    this.drawHealthBars();
+    this.drawCurrentHealthBars(playerHealth, botHealth);
     return time;
   }
 
@@ -97,59 +104,63 @@ export default class Level {
     this.ctx.fill();
   }
 
-  drawHealthBars(playerHealth, botHealth) {
-    let playerHpPos = {
-      x: this.dimensions.width / 2 - LEVEL_CONSTANTS.HEALTH_BAR.width - LEVEL_CONSTANTS.TIMER_RADIUS - 10,
-      y: LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5 + LEVEL_CONSTANTS.HEALTH_BAR.height / 2 - LEVEL_CONSTANTS.TIMER_RADIUS
-    };
-    
+  drawHealthBars() {
     // Player health container
     this.ctx.beginPath();
     this.ctx.strokeStyle = 'BLACK';
     this.ctx.moveTo(
-      playerHpPos.x,
-      playerHpPos.y
+      this.playerHpPos.x,
+      this.playerHpPos.y
     );
     this.ctx.lineTo(
-      playerHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width,
-      playerHpPos.y
+      this.playerHpPos.x - LEVEL_CONSTANTS.HEALTH_BAR.width,
+      this.playerHpPos.y
     );
     this.ctx.lineTo(
-      playerHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width - 15,
-      playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+      this.playerHpPos.x - LEVEL_CONSTANTS.HEALTH_BAR.width,
+      this.playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
     );
     this.ctx.lineTo(
-      playerHpPos.x,
-      playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+      this.playerHpPos.x - LEVEL_CONSTANTS.OFFSET,
+      this.playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
     );
     this.ctx.closePath();
     this.ctx.fill();
     this.ctx.stroke();
+  }
+
+  drawCurrentHealthBars(playerHealth, botHealth) {
+    let currentHealth = LEVEL_CONSTANTS.HEALTH_BAR.width * playerHealth / LEVEL_CONSTANTS.MAX_HEALTH;
 
     // Player current health
-    let playerCurrentHealthx = playerHpPos.x
-      + (
-        (LEVEL_CONSTANTS.MAX_HEALTH - 15) / LEVEL_CONSTANTS.MAX_HEALTH
-      ) * LEVEL_CONSTANTS.HEALTH_BAR.width;
     this.ctx.beginPath();
     this.ctx.strokeStyle = 'BLACK';
     this.ctx.fillStyle = 'RED';
     this.ctx.moveTo(
-      playerCurrentHealthx,
-      playerHpPos.y
+      this.playerHpPos.x,
+      this.playerHpPos.y
     );
     this.ctx.lineTo(
-      playerHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width,
-      playerHpPos.y
+      this.playerHpPos.x - currentHealth,
+      this.playerHpPos.y
     );
-    this.ctx.lineTo(
-      playerHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width - 15,
-      playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
-    );
-    this.ctx.lineTo(
-      playerCurrentHealthx,
-      playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
-    );
+    if (currentHealth < LEVEL_CONSTANTS.OFFSET) {
+      this.ctx.lineTo(
+        this.playerHpPos.x - currentHealth,
+        // currentHealth = currentHealth * tan(pi/4)
+        // since offset = height
+        this.playerHpPos.y + currentHealth
+      );
+    } else {
+      this.ctx.lineTo(
+        this.playerHpPos.x - currentHealth,
+        this.playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+      );
+      this.ctx.lineTo(
+        this.playerHpPos.x - LEVEL_CONSTANTS.OFFSET,
+        this.playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+      );
+    };
     this.ctx.closePath();
     this.ctx.fill();
     this.ctx.stroke();
