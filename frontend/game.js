@@ -22,7 +22,8 @@ export default class Arena {
   animate() {
     if (this.running) {
       // TODO: TEMPORARY
-      let time = this.level.animate(200, 200);
+      let time = this.level.animate(150, 5);
+      
       if (time === 0) {
         this.running = false;
       }

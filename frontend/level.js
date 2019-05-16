@@ -25,8 +25,13 @@ export default class Level {
     this.ctx = ctx;
 
     this.playerHpPos = {
-      x: this.dimensions.width / 2 - LEVEL_CONSTANTS.TIMER_RADIUS - 10,
-      y: LEVEL_CONSTANTS.TIMER_RADIUS
+      x: this.dimensions.width / 2 - LEVEL_CONSTANTS.TIMER_RADIUS,
+      y: LEVEL_CONSTANTS.TIMER_RADIUS - LEVEL_CONSTANTS.HEALTH_BAR.height + 5
+    };
+
+    this.botHpPos = {
+      x: this.dimensions.width / 2 + LEVEL_CONSTANTS.TIMER_RADIUS,
+      y: LEVEL_CONSTANTS.TIMER_RADIUS - LEVEL_CONSTANTS.HEALTH_BAR.height + 5
     };
 
     this.drawTimerCircle = this.drawTimerCircle.bind(this);
@@ -127,6 +132,29 @@ export default class Level {
     this.ctx.closePath();
     this.ctx.fill();
     this.ctx.stroke();
+
+    //bot health container
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = 'BLACK';
+    this.ctx.moveTo(
+      this.botHpPos.x,
+      this.botHpPos.y
+    );
+    this.ctx.lineTo(
+      this.botHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width,
+      this.botHpPos.y
+    );
+    this.ctx.lineTo(
+      this.botHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width,
+      this.botHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+    );
+    this.ctx.lineTo(
+      this.botHpPos.x + LEVEL_CONSTANTS.OFFSET,
+      this.botHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+    );
+    this.ctx.closePath();
+    this.ctx.fill();
+    this.ctx.stroke();
   }
 
   drawCurrentHealthBars(playerHealth, botHealth) {
@@ -159,6 +187,41 @@ export default class Level {
       this.ctx.lineTo(
         this.playerHpPos.x - LEVEL_CONSTANTS.OFFSET,
         this.playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+      );
+    };
+    this.ctx.closePath();
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    let currentBotHealth = LEVEL_CONSTANTS.HEALTH_BAR.width * botHealth / LEVEL_CONSTANTS.MAX_HEALTH;
+
+    // Bot current health
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = 'BLACK';
+    this.ctx.fillStyle = 'RED';
+    this.ctx.moveTo(
+      this.botHpPos.x,
+      this.botHpPos.y
+    );
+    this.ctx.lineTo(
+      this.botHpPos.x + currentBotHealth,
+      this.botHpPos.y
+    );
+    if (currentBotHealth < LEVEL_CONSTANTS.OFFSET) {
+      this.ctx.lineTo(
+        this.botHpPos.x + currentBotHealth,
+        // currentBotHealth = currentBotHealth * tan(pi/4)
+        // since offset = height
+        this.botHpPos.y + currentBotHealth
+      );
+    } else {
+      this.ctx.lineTo(
+        this.botHpPos.x + currentBotHealth,
+        this.botHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+      );
+      this.ctx.lineTo(
+        this.botHpPos.x + LEVEL_CONSTANTS.OFFSET,
+        this.botHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
       );
     };
     this.ctx.closePath();
