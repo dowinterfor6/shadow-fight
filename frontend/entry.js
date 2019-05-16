@@ -1,3 +1,3 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const root = document.getElementById('root');
+  const canvas = document.getElementById('canvas');
 });

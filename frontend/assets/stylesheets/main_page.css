@@ -48,7 +48,7 @@
   align-items: center;
 }
 
-#shadow-container {
+#canvas {
   min-height: 450px;
   min-width: 728px;
   box-sizing: border-box;
