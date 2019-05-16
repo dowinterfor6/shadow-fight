@@ -38,12 +38,14 @@ export default class Level {
     this.drawTimerDisplay = this.drawTimerDisplay.bind(this);
     this.drawTimerText = this.drawTimerText.bind(this);
     this.drawHealthBars = this.drawHealthBars.bind(this);
+    this.drawNames = this.drawNames.bind(this);
   }
 
   animate(playerHealth, botHealth) {
     let time =  this.drawTimer();
     this.drawHealthBars();
     this.drawCurrentHealthBars(playerHealth, botHealth);
+    this.drawNames();
     return time;
   }
 
@@ -54,6 +56,7 @@ export default class Level {
     this.drawTimerCircle();
     this.drawTimerDisplay();
     this.drawTimerText();
+
     
     this.time = this.time - 1;
     if (this.time === 0) {
@@ -228,4 +231,29 @@ export default class Level {
     this.ctx.fill();
     this.ctx.stroke();
   }
+
+  drawNames() {
+    let playerName = 'whsdgfsdfsdfat';
+    let botName = 'bot';
+    let playerNamePos = {
+      x: this.playerHpPos.x - LEVEL_CONSTANTS.OFFSET,
+      y: this.playerHpPos.y + LEVEL_CONSTANTS.TIMER_RADIUS + 8
+    };
+    let botNamePos = {
+      x: this.botHpPos.x + LEVEL_CONSTANTS.OFFSET,
+      y: this.botHpPos.y + LEVEL_CONSTANTS.TIMER_RADIUS + 8
+    };
+
+    this.ctx.font = '32px Arial';
+    this.ctx.fillStyle = 'white';
+    this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
+    this.ctx.textAlign = 'right';
+    this.ctx.fillText(playerName, playerNamePos.x, playerNamePos.y);
+    this.ctx.strokeText(playerName, playerNamePos.x, playerNamePos.y);
+
+    this.ctx.textAlign = 'left';
+    this.ctx.fillText(botName, botNamePos.x, botNamePos.y);
+    this.ctx.strokeText(botName, botNamePos.x, botNamePos.y);
+  }
+
 }
