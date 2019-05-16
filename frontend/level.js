@@ -1,7 +1,20 @@
+const COLOR_PALETTE = {
+  PRIMARY: '#00070A',
+  SECONDARY: '#294552',
+  TERTIARY: '#597884',
+  QUATERNARY: '#ACC4CE',
+  QUINTERNARY: '#9EB9B3'
+};
+
 const LEVEL_CONSTANTS = {
   MAX_TIME: 60 * 120,
-  TIMER_TEXT_HEIGHT: 22.5,
-  TIMER_RADIUS: 15
+  TIMER_TEXT_HEIGHT: 75,
+  TIMER_RADIUS: 45,
+  MAX_HEALTH: 200,
+  HEALTH_BAR: {
+    width: 350,
+    height: 20
+  }
 };
 
 export default class Level {
@@ -13,10 +26,13 @@ export default class Level {
     this.drawTimerCircle = this.drawTimerCircle.bind(this);
     this.drawTimerDisplay = this.drawTimerDisplay.bind(this);
     this.drawTimerText = this.drawTimerText.bind(this);
+    this.drawHealthBars = this.drawHealthBars.bind(this);
   }
 
-  animate() {
-    return this.drawTimer();
+  animate(playerHealth, botHealth) {
+    let time =  this.drawTimer();
+    this.drawHealthBars(playerHealth, botHealth);
+    return time;
   }
 
   drawTimer() {
@@ -28,59 +44,44 @@ export default class Level {
     this.drawTimerText();
     
     this.time = this.time - 1;
-    return this.time;
+    if (this.time === 0) {
+      let returnTime = 0;
+      this.time = LEVEL_CONSTANTS.MAX_TIME;
+      return returnTime;
+    }
   }
 
   drawTimerText() {
-    this.ctx.font = '16px Arial';
+    this.ctx.font = '42px Arial';
     this.ctx.textAlign = 'center';
-    this.ctx.fillStyle = 'red';
+    this.ctx.fillStyle = 'WHITE';
+    this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
     this.ctx.fillText(
       `${Math.round(this.time / 60)}`,
       this.dimensions.width / 2,
-      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT
+      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 8
+    );
+    this.ctx.strokeText(
+      `${Math.round(this.time / 60)}`,
+      this.dimensions.width / 2,
+      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 8
     );
   }
 
   drawTimerCircle() {
-    // CIRCLE
     this.ctx.beginPath();
-    this.ctx.fillStyle = 'pink';
-    this.ctx.strokeStyle = 'black';
+    this.ctx.fillStyle = COLOR_PALETTE.SECONDARY;
     this.ctx.arc(
       this.dimensions.width / 2,
       LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5,
       LEVEL_CONSTANTS.TIMER_RADIUS, 0, 2 * Math.PI
       );
     this.ctx.fill();
-    this.ctx.stroke();
   }
 
   drawTimerDisplay() {
-    // 15 = x^2 + y^2
-    // For a triangle of angle 0, e.g. (120 - time) * 2pi/120
-    // Hyp = 15, x = mid + 15cos(theta), y = pos + 15sin(theta)
-    let x1 = this.dimensions.width / 2
-      + LEVEL_CONSTANTS.TIMER_RADIUS 
-      * Math.sin((LEVEL_CONSTANTS.MAX_TIME - this.time)
-      * 2 * Math.PI / LEVEL_CONSTANTS.MAX_TIME);
-    
-    let y1 = LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5
-      + -LEVEL_CONSTANTS.TIMER_RADIUS 
-      * Math.cos((LEVEL_CONSTANTS.MAX_TIME - this.time)
-      * 2 * Math.PI / LEVEL_CONSTANTS.MAX_TIME);
-    
     this.ctx.beginPath();
-    this.ctx.lineWidth = 1;
-    this.ctx.lineCap = 'round';
-    this.ctx.strokeStyle = 'blue';
-    this.ctx.moveTo(this.dimensions.width / 2, LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5);
-    this.ctx.lineTo(x1, y1);
-    this.ctx.stroke();
-
-    this.ctx.beginPath();
-    this.ctx.fillStyle = 'green';
-    this.ctx.strokeStyle = 'purple';
+    this.ctx.fillStyle = COLOR_PALETTE.QUATERNARY;
     this.ctx.arc(
       this.dimensions.width / 2,
       LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5,
@@ -90,6 +91,66 @@ export default class Level {
       * 2 * Math.PI / LEVEL_CONSTANTS.MAX_TIME
       - 0.5 * Math.PI
     );
+    this.ctx.lineTo(this.dimensions.width / 2,
+      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5
+    );
+    this.ctx.fill();
+  }
+
+  drawHealthBars(playerHealth, botHealth) {
+    let playerHpPos = {
+      x: this.dimensions.width / 2 - LEVEL_CONSTANTS.HEALTH_BAR.width - LEVEL_CONSTANTS.TIMER_RADIUS - 10,
+      y: LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5 + LEVEL_CONSTANTS.HEALTH_BAR.height / 2 - LEVEL_CONSTANTS.TIMER_RADIUS
+    };
+    
+    // Player health container
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = 'BLACK';
+    this.ctx.moveTo(
+      playerHpPos.x,
+      playerHpPos.y
+    );
+    this.ctx.lineTo(
+      playerHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width,
+      playerHpPos.y
+    );
+    this.ctx.lineTo(
+      playerHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width - 15,
+      playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+    );
+    this.ctx.lineTo(
+      playerHpPos.x,
+      playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+    );
+    this.ctx.closePath();
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    // Player current health
+    let playerCurrentHealthx = playerHpPos.x
+      + (
+        (LEVEL_CONSTANTS.MAX_HEALTH - 15) / LEVEL_CONSTANTS.MAX_HEALTH
+      ) * LEVEL_CONSTANTS.HEALTH_BAR.width;
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = 'BLACK';
+    this.ctx.fillStyle = 'RED';
+    this.ctx.moveTo(
+      playerCurrentHealthx,
+      playerHpPos.y
+    );
+    this.ctx.lineTo(
+      playerHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width,
+      playerHpPos.y
+    );
+    this.ctx.lineTo(
+      playerHpPos.x + LEVEL_CONSTANTS.HEALTH_BAR.width - 15,
+      playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+    );
+    this.ctx.lineTo(
+      playerCurrentHealthx,
+      playerHpPos.y + LEVEL_CONSTANTS.HEALTH_BAR.height
+    );
+    this.ctx.closePath();
     this.ctx.fill();
     this.ctx.stroke();
   }

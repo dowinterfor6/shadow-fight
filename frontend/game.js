@@ -8,14 +8,21 @@ export default class Arena {
 
     this.level = new Level(this.ctx, this.dimensions);
 
-    this.animationFrame = requestAnimationFrame(this.animate.bind(this));
     this.drawBackground = this.drawBackground.bind(this);
+    this.play = this.play.bind(this);
+    this.animate();
+  }
+  
+  play() {
+    this.running = true;
+    this.ctx.canvas.removeEventListener('mousedown',this.play);
+    this.animationFrame = requestAnimationFrame(this.animate.bind(this));
   }
 
   animate() {
-
     if (this.running) {
-      let time = this.level.animate();
+      // TODO: TEMPORARY
+      let time = this.level.animate(200, 200);
       if (time === 0) {
         this.running = false;
       }
@@ -27,17 +34,21 @@ export default class Arena {
     }
   }
 
+  // ONLY FOR STARTING SCREEN
   drawBackground() {
     // TODO: Get a good background
 
-    // let background = new Image();
-    // background.src = 'https://i.imgur.com/NNoFNWf.png';
-    // background.onload = () => {
-    //   this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
-    // }
-    this.ctx.beginPath();
-    this.ctx.rect(0, 0, this.dimensions.width, this.dimensions.height);
-    this.ctx.fillStyle = 'Black';
-    this.ctx.fill();
+    let background = new Image();
+    background.src = 'https://i.kym-cdn.com/photos/images/original/000/921/502/3b0.png';
+    background.onload = () => {
+      this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
+    }
+    
+    this.ctx.canvas.addEventListener('mousedown', this.play);
+
+    // this.ctx.beginPath();
+    // this.ctx.rect(0, 0, this.dimensions.width, this.dimensions.height);
+    // this.ctx.fillStyle = 'Black';
+    // this.ctx.fill();
   }
 }
