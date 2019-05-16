@@ -22,9 +22,9 @@ export default class Arena {
   animate() {
     if (this.running) {
       // TODO: TEMPORARY
-      let time = this.level.animate(150, 5);
-      
-      if (time === 0) {
+      let gameRunning = this.level.animate(150, 5);
+
+      if (!gameRunning) {
         this.running = false;
       }
       requestAnimationFrame(this.animate.bind(this));

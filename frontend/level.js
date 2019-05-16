@@ -7,7 +7,7 @@ const COLOR_PALETTE = {
 };
 
 const LEVEL_CONSTANTS = {
-  MAX_TIME: 60 * 120,
+  MAX_TIME: 60 * 15,
   TIMER_TEXT_HEIGHT: 75,
   TIMER_RADIUS: 45,
   MAX_HEALTH: 200,
@@ -42,11 +42,16 @@ export default class Level {
   }
 
   animate(playerHealth, botHealth) {
-    let time =  this.drawTimer();
+    let time = this.drawTimer();
     this.drawHealthBars();
     this.drawCurrentHealthBars(playerHealth, botHealth);
     this.drawNames();
-    return time;
+
+    if (time === 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   drawTimer() {
