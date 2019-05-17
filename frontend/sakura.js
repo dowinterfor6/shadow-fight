@@ -20,7 +20,8 @@ const SAKURA_CONSTANTS = {
       sh: 94
     }
   },
-  SAKURA_RESIZE: 25
+  SAKURA_RESIZE: 25,
+  ROTATION_SPEED: Math.PI / 8
 }
 
 export default class Sakura {
@@ -31,8 +32,10 @@ export default class Sakura {
       x: Math.round(Math.random() * this.dimensions.width),
       y: 0
     }
+
     this.randSprite = Math.round(Math.random() * 2 + 1);
 
+    this.deltax = Math.random() * 0.5 - 0.25;
     this.move = this.move.bind(this);
     this.drawSakura = this.drawSakura.bind(this);
     this.animate = this.animate.bind(this);
@@ -45,6 +48,7 @@ export default class Sakura {
 
   move() {
     this.pos.y -= SAKURA_CONSTANTS.GRAVITY;
+    this.pos.x += this.deltax;
   }
 
   drawSakura() {
@@ -60,6 +64,6 @@ export default class Sakura {
       this.pos.y,
       SAKURA_CONSTANTS.SAKURA_RESIZE,
       SAKURA_CONSTANTS.SAKURA_RESIZE,
-    )
+    );
   }
 }

@@ -72,6 +72,7 @@ export default class Level {
         };
       });
 
+      this.ctx.rotate(0);
       let time = this.drawTimer();
       this.drawHealthBars();
       this.drawCurrentHealthBars(playerHealth, botHealth);
