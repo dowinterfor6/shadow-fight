@@ -4,7 +4,8 @@ export default class Arena {
   constructor(canvas) {
     this.ctx = canvas.getContext('2d');
     this.dimensions = { width: canvas.width, height: canvas.height };
-    this.running = true;
+    this.gameOver = true;
+    this.paused = false;
 
     this.level = new Level(this.ctx, this.dimensions);
 
@@ -15,25 +16,37 @@ export default class Arena {
     this.handlePause = this.handlePause.bind(this);
 
     this.play = this.play.bind(this);
-    this.play();
+    this.restart = this.restart.bind(this);
+    this.restart();
+  }
+
+  restart() {
+    this.animate();
   }
   
   play() {
-    this.running = true;
+    // TODO: Maybe not the best place to put this
+    this.gameOver = false;
+    this.paused = false;
     this.ctx.canvas.removeEventListener('mousedown', this.play);
-    this.ctx.canvas.addEventListener('mousedown', this.handlePause);
     this.animationFrame = requestAnimationFrame(this.animate.bind(this));
   }
-
+  
   animate() {
-    if (this.running) {
+    if (!this.gameOver) {
+      this.ctx.canvas.addEventListener('mousedown', this.handlePause);
       // TODO: TEMPORARY
-      let gameRunning = this.level.animate(150, 5);
-
-      if (!gameRunning) {
-        this.running = false;
+      if (this.paused) {
+        cancelAnimationFrame(this.animationFrame);
+        this.level.animate(150, 5, true);
+        // TODO: RENDER PAUSE;
+      } else {
+        let gameState = this.level.animate(150, 5);
+        if (gameState === 'gameOver') {
+          this.gameOver = true;
+        }
+        requestAnimationFrame(this.animate.bind(this));
       }
-      requestAnimationFrame(this.animate.bind(this));
     } else {
       cancelAnimationFrame(this.animationFrame);
       // Display start screen
@@ -75,7 +88,10 @@ export default class Arena {
 
     if (clickPos.x >= pausePos.x && clickPos.x <= pausePos.x + pauseDimensions.dx) {
       if (clickPos.y >= pausePos.y && clickPos.y <= pausePos.y + pauseDimensions.dy) {
-        this.running = !this.running;
+        this.paused = !this.paused;
+        if (!this.paused) {
+          this.play();
+        }
       }
     }
   }

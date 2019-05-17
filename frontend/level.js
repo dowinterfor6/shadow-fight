@@ -44,17 +44,18 @@ export default class Level {
     this.drawPause = this.drawPause.bind(this);
   }
 
-  animate(playerHealth, botHealth) {
+  animate(playerHealth, botHealth, paused) {
     let time = this.drawTimer();
     this.drawHealthBars();
     this.drawCurrentHealthBars(playerHealth, botHealth);
     this.drawNames();
+    paused ? this.paused = true : this.paused = false;
     this.drawPause();
 
     if (time === 0) {
-      return false;
-    } else {
-      return true;
+      return 'gameOver';
+    } else if (this.paused) {
+      return 'paused';
     }
   }
 
@@ -266,10 +267,10 @@ export default class Level {
   }
 
   drawPause() {
-    this.ctx.beginPath();
-    // this.ctx.rect(this.dimensions.width - 50 - 20, 20, 50, 50);
-    this.ctx.rect(this.dimensions.width - 50 - 10, 25, 30, 40);
-    this.ctx.stroke();
+    // this.ctx.beginPath();
+    // // this.ctx.rect(this.dimensions.width - 50 - 20, 20, 50, 50);
+    // this.ctx.rect(this.dimensions.width - 50 - 10, 25, 30, 40);
+    // this.ctx.stroke();
 
     if (!this.paused) {
       this.ctx.beginPath();
