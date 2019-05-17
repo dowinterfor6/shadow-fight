@@ -57,6 +57,8 @@ export default class Arena {
 
   // ONLY FOR STARTING SCREEN
   drawBackground() {
+    this.ctx.canvas.addEventListener('mousedown', this.play);
+    
     // TODO: Get a good background
 
     let background = new Image();
@@ -65,7 +67,6 @@ export default class Arena {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
     }
     
-    this.ctx.canvas.addEventListener('mousedown', this.play);
 
     // this.ctx.beginPath();
     // this.ctx.rect(0, 0, this.dimensions.width, this.dimensions.height);

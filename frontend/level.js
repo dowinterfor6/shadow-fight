@@ -42,31 +42,37 @@ export default class Level {
     this.drawHealthBars = this.drawHealthBars.bind(this);
     this.drawNames = this.drawNames.bind(this);
     this.drawPause = this.drawPause.bind(this);
+    this.drawBackground = this.drawBackground.bind(this);
   }
 
   animate(playerHealth, botHealth, paused) {
-    let time = this.drawTimer();
-    this.drawHealthBars();
-    this.drawCurrentHealthBars(playerHealth, botHealth);
-    this.drawNames();
-    paused ? this.paused = true : this.paused = false;
-    this.drawPause();
-
-    if (time === 0) {
-      return 'gameOver';
-    } else if (this.paused) {
-      return 'paused';
+    // this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    let background = new Image();
+    background.src = 'frontend/assets/images/start-background.jpg';
+    background.onload = () => {
+      this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
+      
+      let time = this.drawTimer();
+      this.drawHealthBars();
+      this.drawCurrentHealthBars(playerHealth, botHealth);
+      this.drawNames();
+      paused ? this.paused = true : this.paused = false;
+      this.drawPause();
+      
+      if (time === 0) {
+        return 'gameOver';
+      } else if (this.paused) {
+        return 'paused';
+      }
     }
   }
 
   drawTimer() {
     // TODO: Need better solution
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     this.drawTimerCircle();
     this.drawTimerDisplay();
     this.drawTimerText();
-
     
     this.time = this.time - 1;
     if (this.time === 0) {
@@ -285,6 +291,7 @@ export default class Level {
       this.ctx.rect(this.dimensions.width - 50 + 10, 25, 10, 40);
       this.ctx.fill();
       this.ctx.stroke();
+
     } else {
       this.ctx.beginPath();
       this.ctx.fillStyle = COLOR_PALETTE.QUINTERNARY;
@@ -295,7 +302,35 @@ export default class Level {
       this.ctx.closePath();
       this.ctx.fill();
       this.ctx.stroke();
+
+      this.ctx.textAlign = 'center';
+      this.ctx.font = '56px Trebuchet MS';
+      this.ctx.fillText(
+        'Game paused',
+        this.dimensions.width / 2,
+        this.dimensions.height / 2 - 36
+      );
+
+      this.ctx.textAlign = 'center';
+      this.ctx.font = '36px Trebuchet MS';
+      this.ctx.fillText(
+        'Press play to continue',
+        this.dimensions.width / 2,
+        this.dimensions.height / 2 + 36
+      );
     };
   }
 
+  drawBackground() {
+    // this.ctx.beginPath();
+    // this.ctx.fillStyle = 'BLACK';
+    // this.ctx.rect(0, 0, this.dimensions.width, this.dimensions.height);
+    // this.ctx.fill();
+
+    let background = new Image();
+    background.src = 'frontend/assets/images/start-background.jpg';
+    background.onload = () => {
+      this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
+    }
+  }
 }
