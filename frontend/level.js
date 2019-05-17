@@ -9,7 +9,7 @@ const COLOR_PALETTE = {
 };
 
 const LEVEL_CONSTANTS = {
-  MAX_TIME: 60 * 120,
+  MAX_TIME: 60 * 15,
   TIMER_TEXT_HEIGHT: 75,
   TIMER_RADIUS: 45,
   MAX_HEALTH: 200,
@@ -53,6 +53,7 @@ export default class Level {
   animate(playerHealth, botHealth, paused) {
     // this.ctx.clearRect(0, 0, canvas.width, canvas.height);
     let time;
+    let winner;
 
     let background = new Image();
     background.src = 'frontend/assets/images/start-background.jpg';
@@ -76,7 +77,7 @@ export default class Level {
       this.ctx.rotate(0);
       time = this.drawTimer();
       this.drawHealthBars();
-      this.drawCurrentHealthBars(playerHealth, botHealth);
+      winner = this.drawCurrentHealthBars(playerHealth, botHealth);
       this.drawNames();
       paused ? this.paused = true : this.paused = false;
       this.drawPause();
@@ -84,7 +85,10 @@ export default class Level {
     // }
     if (time === 0) {
       this.environment = [];
-      return 'gameOver';
+      return 'timeUp';
+    } else if (winner) {
+      this.environment = [];
+      return winner;
     } else if (this.paused) {
       return 'paused';
     }
@@ -199,6 +203,16 @@ export default class Level {
   }
 
   drawCurrentHealthBars(playerHealth, botHealth) {
+    // TODO: TEMPORARY HEALTH
+    playerHealth = (this.time / LEVEL_CONSTANTS.MAX_TIME) * LEVEL_CONSTANTS.MAX_HEALTH;
+    botHealth = (this.time / LEVEL_CONSTANTS.MAX_TIME) * LEVEL_CONSTANTS.MAX_HEALTH;
+
+    if (playerHealth <= 0) {
+      return 'bot';
+    } else if (botHealth <= 0) {
+      return 'player';
+    };
+
     let currentHealth = LEVEL_CONSTANTS.HEALTH_BAR.width * playerHealth / LEVEL_CONSTANTS.MAX_HEALTH;
 
     // Player current health
@@ -271,8 +285,8 @@ export default class Level {
   }
 
   drawNames() {
-    let playerName = 'whsdgfsdfsdfat';
-    let botName = 'bot';
+    let playerName = 'Player 1';
+    let botName = 'Ginger Baker';
     let playerNamePos = {
       x: this.playerHpPos.x - LEVEL_CONSTANTS.OFFSET,
       y: this.playerHpPos.y + LEVEL_CONSTANTS.TIMER_RADIUS + 4
@@ -284,7 +298,8 @@ export default class Level {
 
     this.ctx.font = '32px Trebuchet MS';
     this.ctx.fillStyle = 'white';
-    this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
+    this.ctx.lineWidth = 0.5;
+    this.ctx.strokeStyle = COLOR_PALETTE.SECONDARY;
     this.ctx.textAlign = 'right';
     this.ctx.fillText(playerName, playerNamePos.x, playerNamePos.y);
     this.ctx.strokeText(playerName, playerNamePos.x, playerNamePos.y);

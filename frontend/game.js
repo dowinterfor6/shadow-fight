@@ -42,7 +42,11 @@ export default class Arena {
         // TODO: RENDER PAUSE;
       } else {
         let gameState = this.level.animate(150, 5);
-        if (gameState === 'gameOver') {
+        if (gameState === 'timeUp') {
+          console.log(gameState);
+          this.gameOver = true;
+        } else if (['player', 'bot'].includes(gameState)) {
+          console.log(gameState + ' wins!');
           this.gameOver = true;
         }
         requestAnimationFrame(this.animate.bind(this));
@@ -50,6 +54,7 @@ export default class Arena {
     } else {
       this.ctx.canvas.removeEventListener('mousedown', this.handlePause);
       cancelAnimationFrame(this.animationFrame);
+      this.ctx.clearRect(0, 0, canvas.width, canvas.height);
       // Display start screen
       this.drawBackground();
     }
