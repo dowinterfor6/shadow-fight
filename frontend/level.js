@@ -2,8 +2,8 @@ const COLOR_PALETTE = {
   PRIMARY: '#00070A',
   SECONDARY: '#294552',
   TERTIARY: '#597884',
-  QUATERNARY: '#ACC4CE',
-  QUINTERNARY: '#9EB9B3'
+  QUATERNARY: '#9EB9B3',
+  QUINTERNARY: '#ACC4CE'
 };
 
 const LEVEL_CONSTANTS = {
@@ -34,11 +34,14 @@ export default class Level {
       y: LEVEL_CONSTANTS.TIMER_RADIUS - LEVEL_CONSTANTS.HEALTH_BAR.height + 5
     };
 
+    this.paused = false;
+
     this.drawTimerCircle = this.drawTimerCircle.bind(this);
     this.drawTimerDisplay = this.drawTimerDisplay.bind(this);
     this.drawTimerText = this.drawTimerText.bind(this);
     this.drawHealthBars = this.drawHealthBars.bind(this);
     this.drawNames = this.drawNames.bind(this);
+    this.drawPause = this.drawPause.bind(this);
   }
 
   animate(playerHealth, botHealth) {
@@ -46,6 +49,7 @@ export default class Level {
     this.drawHealthBars();
     this.drawCurrentHealthBars(playerHealth, botHealth);
     this.drawNames();
+    this.drawPause();
 
     if (time === 0) {
       return false;
@@ -259,6 +263,37 @@ export default class Level {
     this.ctx.textAlign = 'left';
     this.ctx.fillText(botName, botNamePos.x, botNamePos.y);
     this.ctx.strokeText(botName, botNamePos.x, botNamePos.y);
+  }
+
+  drawPause() {
+    this.ctx.beginPath();
+    this.ctx.rect(this.dimensions.width - 50 - 20, 20, 50, 50);
+    this.ctx.stroke();
+
+    if (!this.paused) {
+      this.ctx.beginPath();
+      this.ctx.fillStyle = COLOR_PALETTE.QUINTERNARY;
+      this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
+      
+      this.ctx.rect(this.dimensions.width - 50 - 10, 25, 10, 40);
+      this.ctx.fill();
+      this.ctx.stroke();
+
+      this.ctx.beginPath();
+      this.ctx.rect(this.dimensions.width - 50 + 10, 25, 10, 40);
+      this.ctx.fill();
+      this.ctx.stroke();
+    } else {
+      this.ctx.beginPath();
+      this.ctx.fillStyle = COLOR_PALETTE.QUINTERNARY;
+      this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
+      this.ctx.moveTo(this.dimensions.width - 50 - 10, 25);
+      this.ctx.lineTo(this.dimensions.width - 50 - 10, 65);
+      this.ctx.lineTo(this.dimensions.width - 50 + 20, 45);
+      this.ctx.closePath();
+      this.ctx.fill();
+      this.ctx.stroke();
+    };
   }
 
 }
