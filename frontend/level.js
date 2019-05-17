@@ -9,7 +9,7 @@ const COLOR_PALETTE = {
 };
 
 const LEVEL_CONSTANTS = {
-  MAX_TIME: 60 * 15,
+  MAX_TIME: 60 * 120,
   TIMER_TEXT_HEIGHT: 75,
   TIMER_RADIUS: 45,
   MAX_HEALTH: 200,
@@ -18,7 +18,8 @@ const LEVEL_CONSTANTS = {
     height: 20
   },
   OFFSET: 20,
-  ENVIRONMENT_PROBABILITY: 45
+  ENVIRONMENT_PROBABILITY: 45,
+  ENVIRONMENTS: ['sakura', 'snowflake']
 };
 
 export default class Level {
@@ -40,6 +41,9 @@ export default class Level {
     this.paused = false;
 
     this.environment = [];
+
+    let environmentIndex = Math.round(Math.random() * (LEVEL_CONSTANTS.ENVIRONMENTS.length - 1));
+    this.environmentType = LEVEL_CONSTANTS.ENVIRONMENTS[environmentIndex];
 
     this.drawTimerCircle = this.drawTimerCircle.bind(this);
     this.drawTimerDisplay = this.drawTimerDisplay.bind(this);
@@ -63,7 +67,7 @@ export default class Level {
       let environmentGeneration = Math.round(Math.random() * LEVEL_CONSTANTS.ENVIRONMENT_PROBABILITY);
 
       if (environmentGeneration === 1) {
-        let newEnvironment = new Environment(this.ctx, this.dimensions);
+        let newEnvironment = new Environment(this.ctx, this.dimensions, this.environmentType);
         this.environment.push(newEnvironment);
       }
 
@@ -217,7 +221,6 @@ export default class Level {
 
     // Player current health
     this.ctx.beginPath();
-    this.ctx.strokeStyle = 'BLACK';
     this.ctx.fillStyle = 'RED';
     this.ctx.moveTo(
       this.playerHpPos.x,
@@ -246,13 +249,11 @@ export default class Level {
     };
     this.ctx.closePath();
     this.ctx.fill();
-    this.ctx.stroke();
 
     let currentBotHealth = LEVEL_CONSTANTS.HEALTH_BAR.width * botHealth / LEVEL_CONSTANTS.MAX_HEALTH;
 
     // Bot current health
     this.ctx.beginPath();
-    this.ctx.strokeStyle = 'BLACK';
     this.ctx.fillStyle = 'RED';
     this.ctx.moveTo(
       this.botHpPos.x,
@@ -281,7 +282,6 @@ export default class Level {
     };
     this.ctx.closePath();
     this.ctx.fill();
-    this.ctx.stroke();
   }
 
   drawNames() {
