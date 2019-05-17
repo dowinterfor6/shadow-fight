@@ -48,6 +48,7 @@ export default class Arena {
         requestAnimationFrame(this.animate.bind(this));
       }
     } else {
+      this.ctx.canvas.removeEventListener('mousedown', this.handlePause);
       cancelAnimationFrame(this.animationFrame);
       // Display start screen
       this.drawBackground();
