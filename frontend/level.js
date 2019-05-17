@@ -267,7 +267,8 @@ export default class Level {
 
   drawPause() {
     this.ctx.beginPath();
-    this.ctx.rect(this.dimensions.width - 50 - 20, 20, 50, 50);
+    // this.ctx.rect(this.dimensions.width - 50 - 20, 20, 50, 50);
+    this.ctx.rect(this.dimensions.width - 50 - 10, 25, 30, 40);
     this.ctx.stroke();
 
     if (!this.paused) {

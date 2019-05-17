@@ -47,8 +47,3 @@
   justify-content: center;
   align-items: center;
 }
-
-#canvas {
-  box-sizing: border-box;
-  border: 1px solid red;
-}
