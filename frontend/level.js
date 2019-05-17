@@ -1,4 +1,4 @@
-import Sakura from './sakura';
+import Environment from './environment';
 
 const COLOR_PALETTE = {
   PRIMARY: '#00070A',
@@ -18,7 +18,7 @@ const LEVEL_CONSTANTS = {
     height: 20
   },
   OFFSET: 20,
-  SAKURA_PROBABILITY: 45
+  ENVIRONMENT_PROBABILITY: 45
 };
 
 export default class Level {
@@ -39,7 +39,7 @@ export default class Level {
 
     this.paused = false;
 
-    this.sakura = [];
+    this.environment = [];
 
     this.drawTimerCircle = this.drawTimerCircle.bind(this);
     this.drawTimerDisplay = this.drawTimerDisplay.bind(this);
@@ -59,17 +59,17 @@ export default class Level {
     // background.onload = () => {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
       
-      let sakuraGeneration = Math.round(Math.random() * LEVEL_CONSTANTS.SAKURA_PROBABILITY);
+      let environmentGeneration = Math.round(Math.random() * LEVEL_CONSTANTS.ENVIRONMENT_PROBABILITY);
 
-      if (sakuraGeneration === 1) {
-        let newSakura = new Sakura(this.ctx, this.dimensions);
-        this.sakura.push(newSakura);
+      if (environmentGeneration === 1) {
+        let newEnvironment = new Environment(this.ctx, this.dimensions);
+        this.environment.push(newEnvironment);
       }
 
-      this.sakura.forEach((sakura, idx) => {
-        sakura.animate();
-        if (sakura.pos.y > this.dimensions.height + 94) {
-          this.sakura.shift();
+      this.environment.forEach((environment, idx) => {
+        environment.animate();
+        if (environment.pos.y > this.dimensions.height + 94) {
+          this.environment.shift();
         };
       });
 
@@ -83,7 +83,7 @@ export default class Level {
       
     // }
     if (time === 0) {
-      this.sakura = [];
+      this.environment = [];
       return 'gameOver';
     } else if (this.paused) {
       return 'paused';
