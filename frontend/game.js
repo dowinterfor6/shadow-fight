@@ -1,5 +1,13 @@
 import Level from "./level";
 
+const COLOR_PALETTE = {
+  PRIMARY: '#00070A',
+  SECONDARY: '#294552',
+  TERTIARY: '#597884',
+  QUATERNARY: '#9EB9B3',
+  QUINTERNARY: '#ACC4CE'
+};
+
 export default class Arena {
   constructor(canvas) {
     this.ctx = canvas.getContext('2d');
@@ -12,7 +20,26 @@ export default class Arena {
     this.documentOffsetX = (document.body.clientWidth - this.dimensions.width) / 2;
     this.documentOffsetY = (document.body.clientHeight - 80 - this.dimensions.height) / 2;
 
+    this.playPos = {
+      x: this.dimensions.width / 2 - 110,
+      y: this.dimensions.height / 2 + 28
+    };
+    this.playDimensions = {
+      dx: 220,
+      dy: 56
+    };
+
+    this.pausePos = {
+      x: this.dimensions.width - 60,
+      y: 25
+    };
+    this.pauseDimensions = {
+      dx: 30,
+      dy: 40
+    };
+
     this.drawBackground = this.drawBackground.bind(this);
+    this.handlePlay = this.handlePlay.bind(this);
     this.handlePause = this.handlePause.bind(this);
 
     this.play = this.play.bind(this);
@@ -28,7 +55,7 @@ export default class Arena {
     // TODO: Maybe not the best place to put this
     this.gameOver = false;
     this.paused = false;
-    this.ctx.canvas.removeEventListener('mousedown', this.play);
+    this.ctx.canvas.removeEventListener('mousedown', this.handlePlay);
     this.animationFrame = requestAnimationFrame(this.animate.bind(this));
   }
   
@@ -62,39 +89,74 @@ export default class Arena {
 
   // ONLY FOR STARTING SCREEN
   drawBackground() {
-    this.ctx.canvas.addEventListener('mousedown', this.play);
+    this.ctx.canvas.addEventListener('mousedown', this.handlePlay);
     
     // TODO: Get a good background
-
-    let background = new Image();
-    background.src = 'https://i.kym-cdn.com/photos/images/original/000/921/502/3b0.png';
-    background.onload = () => {
-      this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
-    }
+    this.ctx.beginPath();
+    this.ctx.rect(0, 0, this.dimensions.width, this.dimensions.height);
+    this.ctx.fillStyle = 'grey';
+    this.ctx.fill();
     
+    let help = new Image();
+    help.src = '/frontend/assets/images/help.png';
+    help.onload = () => {
+      this.ctx.drawImage(help, this.dimensions.width - 70, 20, 50, 50);
+    };
 
-    // this.ctx.beginPath();
-    // this.ctx.rect(0, 0, this.dimensions.width, this.dimensions.height);
-    // this.ctx.fillStyle = 'Black';
-    // this.ctx.fill();
+    let mute = new Image();
+    mute.src = '/frontend/assets/images/speaker.png';
+    mute.onload = () => {
+      this.ctx.drawImage(mute, this.dimensions.width - 130, 20, 50, 50);
+    };
+
+    this.ctx.font = '72px Arial';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillStyle = 'WHITE';
+    this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
+    this.ctx.fillText(
+      "Ginger Baker's Fight Club",
+      this.dimensions.width / 2,
+      this.dimensions.height / 2 - 72
+    );
+    this.ctx.strokeText(
+      "Ginger Baker's Fight Club",
+      this.dimensions.width / 2,
+      this.dimensions.height / 2 - 72
+    );
+
+    this.ctx.font = '56px Trebuchet MS'
+    this.ctx.fillText(
+      'Play now!',
+      this.dimensions.width / 2,
+      this.dimensions.height / 2 + 72
+    );
+    this.ctx.strokeText(
+      'Play now!',
+      this.dimensions.width / 2,
+      this.dimensions.height / 2 + 72
+    );
+  }
+
+  handlePlay(e) {
+    let clickPos = {
+      x: e.pageX - this.documentOffsetX,
+      y: e.pageY - this.documentOffsetY - 80
+    }
+    if (clickPos.x >= this.playPos.x && clickPos.x <= this.playPos.x + this.playDimensions.dx) {
+      if (clickPos.y >= this.playPos.y && clickPos.y <= this.playPos.y + this.playDimensions.dy) {
+        this.play();
+      }
+    }
   }
 
   handlePause(e) {
-    let pausePos = {
-      x: this.dimensions.width - 60,
-      y: 25
-    };
-    let pauseDimensions = {
-      dx: 30,
-      dy: 40
-    };
     let clickPos = {
       x: e.pageX - this.documentOffsetX,
       y: e.pageY - this.documentOffsetY - 80
     }
 
-    if (clickPos.x >= pausePos.x && clickPos.x <= pausePos.x + pauseDimensions.dx) {
-      if (clickPos.y >= pausePos.y && clickPos.y <= pausePos.y + pauseDimensions.dy) {
+    if (clickPos.x >= this.pausePos.x && clickPos.x <= this.pausePos.x + this.pauseDimensions.dx) {
+      if (clickPos.y >= this.pausePos.y && clickPos.y <= this.pausePos.y + this.pauseDimensions.dy) {
         this.paused = !this.paused;
         if (!this.paused) {
           this.play();
