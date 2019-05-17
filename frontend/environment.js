@@ -1,30 +1,13 @@
 const ENVIRONMENT_CONSTANTS = {
   GRAVITY: -0.7,
-  ENVIRONMENT_DIMENSIONS: {
-    1: {
-      sx: 0,
-      sy: 0,
-      sw: 94,
-      sh: 94
-    },
-    2: {
-      sx: 94,
-      sy: 0,
-      sw: 94,
-      sh: 94
-    },
-    3: {
-      sx: 188,
-      sy: 0,
-      sw: 94,
-      sh: 94
-    }
-  },
+  ENVIRONMENT_DIMENSIONS: 94,
+  SAKURA_SPRITES: 3,
+  SNOWFLAKE_SPRITES: 9,
   ENVIRONMENT_RESIZE: 25
 }
 
 export default class Environment {
-  constructor(ctx, dimensions) {
+  constructor(ctx, dimensions, type) {
     this.ctx = ctx;
     this.dimensions = dimensions;
     this.pos = {
@@ -32,7 +15,15 @@ export default class Environment {
       y: -94
     }
 
-    this.randSprite = Math.round(Math.random() * 2 + 1);
+    this.type = type;
+    switch (type) {
+      case 'sakura':
+        this.randSprite = Math.round(Math.random() * (ENVIRONMENT_CONSTANTS.SAKURA_SPRITES - 1));
+        break;
+      case 'snowflake':
+        this.randSprite = Math.round(Math.random() * (ENVIRONMENT_CONSTANTS.SNOWFLAKE_SPRITES - 1));
+        break;
+    }
 
     this.deltax = Math.random() * 0.5 - 0.25;
     this.move = this.move.bind(this);
@@ -52,13 +43,21 @@ export default class Environment {
 
   drawEnvironment() {
     let environment = new Image();
-    environment.src = 'frontend/assets/images/sakura.png';
+    switch (this.type) {
+      case 'sakura':
+        environment.src = 'frontend/assets/images/sakura.png';
+        break;
+      case 'snowflake':
+        environment.src = 'frontend/assets/images/snowflake.png';
+        break;
+    }
+    
     this.ctx.drawImage(
       environment, 
-      ENVIRONMENT_CONSTANTS.ENVIRONMENT_DIMENSIONS[this.randSprite].sx, 
-      ENVIRONMENT_CONSTANTS.ENVIRONMENT_DIMENSIONS[this.randSprite].sy,
-      ENVIRONMENT_CONSTANTS.ENVIRONMENT_DIMENSIONS[this.randSprite].sw,
-      ENVIRONMENT_CONSTANTS.ENVIRONMENT_DIMENSIONS[this.randSprite].sh,
+      ENVIRONMENT_CONSTANTS.ENVIRONMENT_DIMENSIONS * this.randSprite, 
+      0,
+      ENVIRONMENT_CONSTANTS.ENVIRONMENT_DIMENSIONS,
+      ENVIRONMENT_CONSTANTS.ENVIRONMENT_DIMENSIONS,
       this.pos.x,
       this.pos.y,
       ENVIRONMENT_CONSTANTS.ENVIRONMENT_RESIZE,
