@@ -1,3 +1,5 @@
+import Sakura from './sakura';
+
 const COLOR_PALETTE = {
   PRIMARY: '#00070A',
   SECONDARY: '#294552',
@@ -15,7 +17,8 @@ const LEVEL_CONSTANTS = {
     width: 400,
     height: 20
   },
-  OFFSET: 20
+  OFFSET: 20,
+  SAKURA_PROBABILITY: 45
 };
 
 export default class Level {
@@ -36,6 +39,8 @@ export default class Level {
 
     this.paused = false;
 
+    this.sakura = [];
+
     this.drawTimerCircle = this.drawTimerCircle.bind(this);
     this.drawTimerDisplay = this.drawTimerDisplay.bind(this);
     this.drawTimerText = this.drawTimerText.bind(this);
@@ -53,6 +58,20 @@ export default class Level {
     background.onload = () => {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
       
+      let sakuraGeneration = Math.round(Math.random() * LEVEL_CONSTANTS.SAKURA_PROBABILITY);
+
+      if (sakuraGeneration === 1) {
+        let newSakura = new Sakura(this.ctx, this.dimensions);
+        this.sakura.push(newSakura);
+      }
+
+      this.sakura.forEach((sakura, idx) => {
+        sakura.animate();
+        if (sakura.pos.y > this.dimensions.height) {
+          this.sakura.shift();
+        };
+      });
+
       let time = this.drawTimer();
       this.drawHealthBars();
       this.drawCurrentHealthBars(playerHealth, botHealth);
@@ -310,6 +329,11 @@ export default class Level {
         this.dimensions.width / 2,
         this.dimensions.height / 2 - 36
       );
+      this.ctx.strokeText(
+        'Game paused',
+        this.dimensions.width / 2,
+        this.dimensions.height / 2 - 36
+      );
 
       this.ctx.textAlign = 'center';
       this.ctx.font = '36px Trebuchet MS';
@@ -318,6 +342,11 @@ export default class Level {
         this.dimensions.width / 2,
         this.dimensions.height / 2 + 36
       );
+      this.ctx.strokeText(
+        'Press play to continue',
+        this.dimensions.width / 2,
+        this.dimensions.height / 2 + 36
+      )
     };
   }
 
