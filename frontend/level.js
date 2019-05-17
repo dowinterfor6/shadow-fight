@@ -7,12 +7,12 @@ const COLOR_PALETTE = {
 };
 
 const LEVEL_CONSTANTS = {
-  MAX_TIME: 60 * 15,
+  MAX_TIME: 60 * 120,
   TIMER_TEXT_HEIGHT: 75,
   TIMER_RADIUS: 45,
   MAX_HEALTH: 200,
   HEALTH_BAR: {
-    width: 350,
+    width: 400,
     height: 20
   },
   OFFSET: 20
@@ -72,19 +72,19 @@ export default class Level {
   }
 
   drawTimerText() {
-    this.ctx.font = '42px Arial';
+    this.ctx.font = '56px Trebuchet MS';
     this.ctx.textAlign = 'center';
     this.ctx.fillStyle = 'WHITE';
     this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
     this.ctx.fillText(
       `${Math.round(this.time / 60)}`,
       this.dimensions.width / 2,
-      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 8
+      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 12
     );
     this.ctx.strokeText(
       `${Math.round(this.time / 60)}`,
       this.dimensions.width / 2,
-      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 8
+      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 12
     );
   }
 
@@ -242,14 +242,14 @@ export default class Level {
     let botName = 'bot';
     let playerNamePos = {
       x: this.playerHpPos.x - LEVEL_CONSTANTS.OFFSET,
-      y: this.playerHpPos.y + LEVEL_CONSTANTS.TIMER_RADIUS + 8
+      y: this.playerHpPos.y + LEVEL_CONSTANTS.TIMER_RADIUS + 4
     };
     let botNamePos = {
       x: this.botHpPos.x + LEVEL_CONSTANTS.OFFSET,
-      y: this.botHpPos.y + LEVEL_CONSTANTS.TIMER_RADIUS + 8
+      y: this.botHpPos.y + LEVEL_CONSTANTS.TIMER_RADIUS + 4
     };
 
-    this.ctx.font = '32px Arial';
+    this.ctx.font = '32px Trebuchet MS';
     this.ctx.fillStyle = 'white';
     this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
     this.ctx.textAlign = 'right';
