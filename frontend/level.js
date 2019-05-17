@@ -52,10 +52,11 @@ export default class Level {
 
   animate(playerHealth, botHealth, paused) {
     // this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+    let time;
+
     let background = new Image();
     background.src = 'frontend/assets/images/start-background.jpg';
-    background.onload = () => {
+    // background.onload = () => {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
       
       let sakuraGeneration = Math.round(Math.random() * LEVEL_CONSTANTS.SAKURA_PROBABILITY);
@@ -67,24 +68,25 @@ export default class Level {
 
       this.sakura.forEach((sakura, idx) => {
         sakura.animate();
-        if (sakura.pos.y > this.dimensions.height) {
+        if (sakura.pos.y > this.dimensions.height + 94) {
           this.sakura.shift();
         };
       });
 
       this.ctx.rotate(0);
-      let time = this.drawTimer();
+      time = this.drawTimer();
       this.drawHealthBars();
       this.drawCurrentHealthBars(playerHealth, botHealth);
       this.drawNames();
       paused ? this.paused = true : this.paused = false;
       this.drawPause();
       
-      if (time === 0) {
-        return 'gameOver';
-      } else if (this.paused) {
-        return 'paused';
-      }
+    // }
+    if (time === 0) {
+      this.sakura = [];
+      return 'gameOver';
+    } else if (this.paused) {
+      return 'paused';
     }
   }
 

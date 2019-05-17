@@ -30,7 +30,7 @@ export default class Sakura {
     this.dimensions = dimensions;
     this.pos = {
       x: Math.round(Math.random() * this.dimensions.width),
-      y: 0
+      y: -94
     }
 
     this.randSprite = Math.round(Math.random() * 2 + 1);
