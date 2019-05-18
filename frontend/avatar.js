@@ -62,7 +62,6 @@ export default class Avatar {
   animate(paused) {
     this.paused = !!paused;
     if (!this.paused) {
-      this.vel.vy -= AVATAR_CONSTANTS.GRAVITY;
       this.updatePosition();
     }
     this.drawAvatar();
@@ -71,19 +70,21 @@ export default class Avatar {
   updatePosition() {
     Object.keys(this.keypressPOJO).forEach((key) => {
       if (this.keypressPOJO[key]) {
-        console.log(key);
         // Keypress movement
         if (this.keyCodeMovement[key].x !== 0) {
           this.vel.vx = this.keyCodeMovement[key].x
             * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
-        }
+        };
         // Prevent infinite jump
         if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
-          this.vel.vy = this.keyCodeMovement[key].y
-            * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
-        }
+          if (this.keyCodeMovement[key].y !== 0) {
+            this.vel.vy = this.keyCodeMovement[key].y
+              * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
+          };
+        };
       }
     });
+    this.vel.vy -= AVATAR_CONSTANTS.GRAVITY;
     this.pos.y += this.vel.vy;
     this.pos.x += this.vel.vx;
     this.checkBoundary();
@@ -115,14 +116,16 @@ export default class Avatar {
   }
 
   checkBoundary() {
-    let offset = this.playerNum === 1 ? 0 : AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width;
+    let maxOffset = this.playerNum === 1 ? 0 : AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width;
+    let minOffset = this.playerNum === 2 ? 0 : AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width;
     if (this.pos.x < 0) {
       this.pos.x = 0;
       this.vel.vx = 0;
-    } else if (this.pos.x > this.dimensions.width - offset) {
-      this.pos.x = this.dimensions.width - offset;
+    } else if (this.pos.x > this.dimensions.width - maxOffset - minOffset) {
+      this.pos.x = this.dimensions.width - maxOffset - minOffset;
       this.vel.vx = 0;
-    } else if (this.pos.y > this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
+    };
+    if (this.pos.y > this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
       this.pos.y = this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height;
       this.vel.vy = 0;
     } else if (this.pos.y < 0) {
