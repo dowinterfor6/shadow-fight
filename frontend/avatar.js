@@ -3,7 +3,7 @@ const AVATAR_CONSTANTS = {
     width: 50,
     height: 150
   },
-  GRAVITY: -0.7,
+  GRAVITY: -1.8,
   P1_MOVEMENT: {
     87: { x: 0, y: -1 },
     65: { x: -1, y: 0 },
@@ -18,7 +18,7 @@ const AVATAR_CONSTANTS = {
   },
   MOVEMENT_SPEED: {
     x: 10,
-    y: 10
+    y: 30
   }
 }
 
@@ -52,6 +52,7 @@ export default class Avatar {
     this.moveAvatar = this.moveAvatar.bind(this);
     this.stopAvatar = this.stopAvatar.bind(this);
     this.checkBoundary = this.checkBoundary.bind(this);
+    this.updatePosition = this.updatePosition.bind(this);
 
     //TODO: IS THERE A BETTER SOLUTION?
     document.addEventListener('keydown', this.moveAvatar);
@@ -61,40 +62,38 @@ export default class Avatar {
   animate(paused) {
     this.paused = !!paused;
     if (!this.paused) {
-      Object.keys(this.keypressPOJO).forEach((key) => {
-        if (this.keypressPOJO[key]) {
-          // Keypress movement
-          this.vel.vx = this.keyCodeMovement[key].x
-            * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
-          // Prevent infinite jump
-          if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
-            this.vel.vy += this.keyCodeMovement[key].y
-              * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
-          }
-        }
-      });
-
       this.vel.vy -= AVATAR_CONSTANTS.GRAVITY;
-      this.pos.y += this.vel.vy;
-      this.pos.x += this.vel.vx;
-      this.checkBoundary();
+      this.updatePosition();
     }
     this.drawAvatar();
+  }
+
+  updatePosition() {
+    Object.keys(this.keypressPOJO).forEach((key) => {
+      if (this.keypressPOJO[key]) {
+        console.log(key);
+        // Keypress movement
+        if (this.keyCodeMovement[key].x !== 0) {
+          this.vel.vx = this.keyCodeMovement[key].x
+            * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
+        }
+        // Prevent infinite jump
+        if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
+          this.vel.vy = this.keyCodeMovement[key].y
+            * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
+        }
+      }
+    });
+    this.pos.y += this.vel.vy;
+    this.pos.x += this.vel.vx;
+    this.checkBoundary();
   }
 
   moveAvatar(e) {
     if (!this.paused && !e.repeat) {
       if (Object.keys(this.keyCodeMovement).includes(e.keyCode.toString())) {
         this.keypressPOJO[e.keyCode.toString()] = true;
-        // // Keypress movement
-        // this.vel.vx = this.keyCodeMovement[e.keyCode.toString()].x
-        //   * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
-        // // Prevent infinite jump
-        // if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
-        //   this.vel.vy += this.keyCodeMovement[e.keyCode.toString()].y
-        //     * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
-        // }
-
+        this.updatePosition();
       }
     }
   }
@@ -102,6 +101,7 @@ export default class Avatar {
   stopAvatar(e) {
     this.vel.vx = 0;
     this.keypressPOJO[e.keyCode.toString()] = false;
+    this.updatePosition();
   }
   
   drawAvatar() {
