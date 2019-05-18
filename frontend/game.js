@@ -138,20 +138,32 @@ export default class Arena {
       this.ctx.drawImage(mute, this.dimensions.width - 130, 20, 50, 50);
     };
 
-    this.ctx.font = '72px Arial';
+    // this.ctx.font = '72px Arial';
     this.ctx.textAlign = 'center';
     this.ctx.fillStyle = 'WHITE';
-    this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
-    this.ctx.fillText(
-      "Ginger Baker's Fight Club",
-      this.dimensions.width / 2,
-      this.dimensions.height / 2 - 72
-    );
-    this.ctx.strokeText(
-      "Ginger Baker's Fight Club",
-      this.dimensions.width / 2,
-      this.dimensions.height / 2 - 72
-    );
+    // this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
+    // this.ctx.fillText(
+    //   "Ginger Baker's Fight Club",
+    //   this.dimensions.width / 2,
+    //   this.dimensions.height / 2 - 72
+    // );
+    // this.ctx.strokeText(
+    //   "Ginger Baker's Fight Club",
+    //   this.dimensions.width / 2,
+    //   this.dimensions.height / 2 - 72
+    // );
+
+    let header = new Image();
+    header.src = '/frontend/assets/images/header.png';
+    header.onload = () => {
+      this.ctx.drawImage(
+        header, 
+        20, 
+        this.dimensions.height / 2 - 100, 
+        this.dimensions.width - 40, 
+        76
+      );
+    }
 
     this.ctx.font = '56px Trebuchet MS'
     this.ctx.fillText(
