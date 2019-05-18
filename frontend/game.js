@@ -127,61 +127,56 @@ export default class Arena {
     
     // TODO: Get a good background
     // this.ctx.beginPath();
-    this.ctx.fillStyle = 'grey';
-    this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
-    
-    let help = new Image();
-    help.src = '/frontend/assets/images/help.png';
-    help.onload = () => {
-      this.ctx.drawImage(help, this.dimensions.width - 70, 20, 50, 50);
-    };
+    // this.ctx.fillStyle = 'grey';
+    // this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
 
-    let mute = new Image();
-    this.sound ? 
-      mute.src = '/frontend/assets/images/mute.png' :
-      mute.src = '/frontend/assets/images/speaker.png'
-    mute.onload = () => {
-      this.ctx.drawImage(mute, this.dimensions.width - 130, 20, 50, 50);
-    };
-
-    // this.ctx.font = '72px Arial';
-    this.ctx.textAlign = 'center';
-    this.ctx.fillStyle = 'WHITE';
-    // this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
-    // this.ctx.fillText(
-    //   "Ginger Baker's Fight Club",
-    //   this.dimensions.width / 2,
-    //   this.dimensions.height / 2 - 72
-    // );
-    // this.ctx.strokeText(
-    //   "Ginger Baker's Fight Club",
-    //   this.dimensions.width / 2,
-    //   this.dimensions.height / 2 - 72
-    // );
-
-    let header = new Image();
-    header.src = '/frontend/assets/images/header.png';
-    header.onload = () => {
-      this.ctx.drawImage(
-        header, 
-        20, 
-        this.dimensions.height / 2 - 100, 
-        this.dimensions.width - 40, 
-        76
+    let background = new Image();
+    background.src = '/frontend/assets/images/start-background.jpg';
+    background.onload = () => {
+      this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
+      
+      let help = new Image();
+      help.src = '/frontend/assets/images/help.png';
+      help.onload = () => {
+        this.ctx.drawImage(help, this.dimensions.width - 70, 20, 50, 50);
+      };
+  
+      let mute = new Image();
+      this.sound ? 
+        mute.src = '/frontend/assets/images/mute.png' :
+        mute.src = '/frontend/assets/images/speaker.png'
+      mute.onload = () => {
+        this.ctx.drawImage(mute, this.dimensions.width - 130, 20, 50, 50);
+      };
+  
+      this.ctx.textAlign = 'center';
+      this.ctx.fillStyle = 'WHITE';
+  
+      let header = new Image();
+      header.src = '/frontend/assets/images/header.png';
+      header.onload = () => {
+        this.ctx.drawImage(
+          header, 
+          20, 
+          this.dimensions.height / 2 - 100, 
+          this.dimensions.width - 40, 
+          76
+        );
+      }
+  
+      this.ctx.font = '56px Trebuchet MS'
+      this.ctx.fillText(
+        'Play now!',
+        this.dimensions.width / 2,
+        this.dimensions.height / 2 + 72
       );
-    }
-
-    this.ctx.font = '56px Trebuchet MS'
-    this.ctx.fillText(
-      'Play now!',
-      this.dimensions.width / 2,
-      this.dimensions.height / 2 + 72
-    );
-    this.ctx.strokeText(
-      'Play now!',
-      this.dimensions.width / 2,
-      this.dimensions.height / 2 + 72
-    );
+      this.ctx.strokeText(
+        'Play now!',
+        this.dimensions.width / 2,
+        this.dimensions.height / 2 + 72
+      );
+    };
+    
   }
 
   handlePlay(e) {
