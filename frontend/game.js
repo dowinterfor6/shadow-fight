@@ -14,6 +14,8 @@ export default class Arena {
     this.dimensions = { width: canvas.width, height: canvas.height };
     this.gameOver = true;
     this.paused = false;
+    this.sound = false;
+    this.helpModal = false;
 
     this.level = new Level(this.ctx, this.dimensions);
 
@@ -38,12 +40,34 @@ export default class Arena {
       dy: 40
     };
 
+    this.soundPos = {
+      x: this.dimensions.width - 130,
+      y: 20
+    };
+    this.soundDimensions = {
+      dx: 50,
+      dy: 50
+    };
+
+    this.helpPos = {
+      x: this.dimensions.width - 70,
+      y: 20
+    };
+    this.helpDimensions = {
+      dx: 50,
+      dy: 50
+    };
+
     this.drawBackground = this.drawBackground.bind(this);
+    this.drawHelp = this.drawHelp.bind(this);
     this.handlePlay = this.handlePlay.bind(this);
     this.handlePause = this.handlePause.bind(this);
+    this.handleMute = this.handleMute.bind(this);
+    this.handleHelp = this.handleHelp.bind(this);
 
     this.play = this.play.bind(this);
     this.restart = this.restart.bind(this);
+
     this.restart();
   }
 
@@ -61,6 +85,8 @@ export default class Arena {
   
   animate() {
     if (!this.gameOver) {
+      this.ctx.canvas.removeEventListener('mousedown', this.handleMute);
+      this.ctx.canvas.removeEventListener('mousedown', this.handleHelp);
       this.ctx.canvas.addEventListener('mousedown', this.handlePause);
       // TODO: TEMPORARY
       if (this.paused) {
@@ -79,6 +105,8 @@ export default class Arena {
         requestAnimationFrame(this.animate.bind(this));
       }
     } else {
+      this.ctx.canvas.addEventListener('mousedown', this.handleMute);
+      this.ctx.canvas.addEventListener('mousedown', this.handleHelp);
       this.ctx.canvas.removeEventListener('mousedown', this.handlePause);
       cancelAnimationFrame(this.animationFrame);
       this.ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -92,10 +120,9 @@ export default class Arena {
     this.ctx.canvas.addEventListener('mousedown', this.handlePlay);
     
     // TODO: Get a good background
-    this.ctx.beginPath();
-    this.ctx.rect(0, 0, this.dimensions.width, this.dimensions.height);
+    // this.ctx.beginPath();
     this.ctx.fillStyle = 'grey';
-    this.ctx.fill();
+    this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
     
     let help = new Image();
     help.src = '/frontend/assets/images/help.png';
@@ -104,7 +131,9 @@ export default class Arena {
     };
 
     let mute = new Image();
-    mute.src = '/frontend/assets/images/speaker.png';
+    this.sound ? 
+      mute.src = '/frontend/assets/images/mute.png' :
+      mute.src = '/frontend/assets/images/speaker.png'
     mute.onload = () => {
       this.ctx.drawImage(mute, this.dimensions.width - 130, 20, 50, 50);
     };
@@ -154,7 +183,6 @@ export default class Arena {
       x: e.pageX - this.documentOffsetX,
       y: e.pageY - this.documentOffsetY - 80
     }
-
     if (clickPos.x >= this.pausePos.x && clickPos.x <= this.pausePos.x + this.pauseDimensions.dx) {
       if (clickPos.y >= this.pausePos.y && clickPos.y <= this.pausePos.y + this.pauseDimensions.dy) {
         this.paused = !this.paused;
@@ -163,5 +191,42 @@ export default class Arena {
         }
       }
     }
+  }
+
+  handleMute(e) {
+    let clickPos = {
+      x: e.pageX - this.documentOffsetX,
+      y: e.pageY - this.documentOffsetY - 80
+    }
+    if (clickPos.x >= this.soundPos.x && clickPos.x <= this.soundPos.x + this.soundDimensions.dx) {
+      if (clickPos.y >= this.soundPos.y && clickPos.y <= this.soundPos.y + this.soundDimensions.dy) {
+        this.sound = !this.sound;
+        this.drawBackground();
+      }
+    }
+  }
+
+  handleHelp(e) {
+    let clickPos = {
+      x: e.pageX - this.documentOffsetX,
+      y: e.pageY - this.documentOffsetY - 80
+    }
+    if (clickPos.x >= this.helpPos.x && clickPos.x <= this.helpPos.x + this.helpDimensions.dx) {
+      if (clickPos.y >= this.helpPos.y && clickPos.y <= this.helpPos.y + this.helpDimensions.dy) {
+        this.helpModal = !this.helpModal;
+        if (this.helpModal) {
+          this.drawHelp();
+        } else {
+          this.drawBackground();
+        }
+      }
+    }
+  }
+  
+  drawHelp() {
+    // this.ctx.beginPath();
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
+    console.log('halp');
   }
 }
