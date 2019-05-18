@@ -56,39 +56,33 @@ export default class Level {
   }
 
   animate(playerHealth, botHealth, paused) {
-    // this.ctx.clearRect(0, 0, canvas.width, canvas.height);
     let time;
     let winner;
 
-    let background = new Image();
-    background.src = 'frontend/assets/images/start-background.jpg';
-    // background.onload = () => {
-      this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
+    this.drawBackground();
+
+    let environmentGeneration = Math.round(Math.random() * LEVEL_CONSTANTS.ENVIRONMENT_PROBABILITY);
+
+    if (environmentGeneration === 1) {
+      let newEnvironment = new Environment(this.ctx, this.dimensions, this.environmentType);
+      this.environment.push(newEnvironment);
+    }
+
+    this.environment.forEach((environment, idx) => {
+      environment.animate();
+      if (environment.pos.y > this.dimensions.height + 94) {
+        this.environment.shift();
+      };
+    });
+
+    time = this.drawTimer();
+    this.drawHealthBars();
+    winner = this.drawCurrentHealthBars(playerHealth, botHealth);
+    this.drawNames();
+    this.drawFloor();
+    paused ? this.paused = true : this.paused = false;
+    this.drawPause();
       
-      let environmentGeneration = Math.round(Math.random() * LEVEL_CONSTANTS.ENVIRONMENT_PROBABILITY);
-
-      if (environmentGeneration === 1) {
-        let newEnvironment = new Environment(this.ctx, this.dimensions, this.environmentType);
-        this.environment.push(newEnvironment);
-      }
-
-      this.environment.forEach((environment, idx) => {
-        environment.animate();
-        if (environment.pos.y > this.dimensions.height + 94) {
-          this.environment.shift();
-        };
-      });
-
-      this.ctx.rotate(0);
-      time = this.drawTimer();
-      this.drawHealthBars();
-      winner = this.drawCurrentHealthBars(playerHealth, botHealth);
-      this.drawNames();
-      this.drawFloor();
-      paused ? this.paused = true : this.paused = false;
-      this.drawPause();
-      
-    // }
     if (time === 0) {
       this.environment = [];
       return 'timeUp';
@@ -377,7 +371,7 @@ export default class Level {
     // this.ctx.fill();
 
     let background = new Image();
-    background.src = 'frontend/assets/images/start-background.jpg';
+    background.src = 'frontend/assets/images/game-background.jpg';
     background.onload = () => {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
     }
