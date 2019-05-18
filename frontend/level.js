@@ -52,6 +52,7 @@ export default class Level {
     this.drawNames = this.drawNames.bind(this);
     this.drawPause = this.drawPause.bind(this);
     this.drawBackground = this.drawBackground.bind(this);
+    this.drawFloor = this.drawFloor.bind(this);
   }
 
   animate(playerHealth, botHealth, paused) {
@@ -83,6 +84,7 @@ export default class Level {
       this.drawHealthBars();
       winner = this.drawCurrentHealthBars(playerHealth, botHealth);
       this.drawNames();
+      this.drawFloor();
       paused ? this.paused = true : this.paused = false;
       this.drawPause();
       
@@ -379,5 +381,16 @@ export default class Level {
     background.onload = () => {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
     }
+  }
+
+  // TODO: Probably temporary
+  drawFloor() {
+    this.ctx.fillStyle = 'BROWN';
+    this.ctx.fillRect(
+      0, 
+      this.dimensions.height - 155, 
+      this.dimensions.width, 
+      155
+    );
   }
 }

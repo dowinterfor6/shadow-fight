@@ -1,4 +1,5 @@
 import Level from "./level";
+import Avatar from './avatar';
 
 const COLOR_PALETTE = {
   PRIMARY: '#00070A',
@@ -18,6 +19,8 @@ export default class Arena {
     this.helpModal = false;
 
     this.level = new Level(this.ctx, this.dimensions);
+    this.player1 = new Avatar(this.ctx, this.dimensions, 1);
+    this.player2 = new Avatar(this.ctx, this.dimensions, 2);
 
     this.documentOffsetX = (document.body.clientWidth - this.dimensions.width) / 2;
     this.documentOffsetY = (document.body.clientHeight - 80 - this.dimensions.height) / 2;
@@ -92,9 +95,12 @@ export default class Arena {
       if (this.paused) {
         cancelAnimationFrame(this.animationFrame);
         this.level.animate(150, 5, true);
-        // TODO: RENDER PAUSE;
+        this.player1.animate(true);
+        this.player2.animate(true);
       } else {
         let gameState = this.level.animate(150, 5);
+        this.player1.animate(false);
+        this.player2.animate(false);
         if (gameState === 'timeUp') {
           console.log(gameState);
           this.gameOver = true;
