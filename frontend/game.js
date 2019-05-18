@@ -160,7 +160,7 @@ export default class Arena {
           20, 
           this.dimensions.height / 2 - 100, 
           this.dimensions.width - 40, 
-          76
+          56
         );
       }
   
