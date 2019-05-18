@@ -42,6 +42,10 @@ export default class Avatar {
     this.paused = false;
     this.keyCodeMovement = this.playerNum === 1 ? 
       AVATAR_CONSTANTS.P1_MOVEMENT : AVATAR_CONSTANTS.P2_MOVEMENT;
+    this.keypressPOJO = {};
+    Object.keys(this.keyCodeMovement).forEach((key) => {
+      this.keypressPOJO[key] = false;
+    });
 
     this.animate = this.animate.bind(this);
     this.drawAvatar = this.drawAvatar.bind(this);
@@ -57,6 +61,19 @@ export default class Avatar {
   animate(paused) {
     this.paused = !!paused;
     if (!this.paused) {
+      Object.keys(this.keypressPOJO).forEach((key) => {
+        if (this.keypressPOJO[key]) {
+          // Keypress movement
+          this.vel.vx = this.keyCodeMovement[key].x
+            * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
+          // Prevent infinite jump
+          if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
+            this.vel.vy += this.keyCodeMovement[key].y
+              * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
+          }
+        }
+      });
+
       this.vel.vy -= AVATAR_CONSTANTS.GRAVITY;
       this.pos.y += this.vel.vy;
       this.pos.x += this.vel.vx;
@@ -66,24 +83,25 @@ export default class Avatar {
   }
 
   moveAvatar(e) {
-    if (!this.paused) {
+    if (!this.paused && !e.repeat) {
       if (Object.keys(this.keyCodeMovement).includes(e.keyCode.toString())) {
-        // Keypress movement
-        this.vel.vx = this.keyCodeMovement[e.keyCode.toString()].x 
-          * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
-        // Prevent infinite jump
-        if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
-          this.vel.vy += this.keyCodeMovement[e.keyCode.toString()].y
-            * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
-        }
-        this.checkBoundary();
+        this.keypressPOJO[e.keyCode.toString()] = true;
+        // // Keypress movement
+        // this.vel.vx = this.keyCodeMovement[e.keyCode.toString()].x
+        //   * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
+        // // Prevent infinite jump
+        // if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
+        //   this.vel.vy += this.keyCodeMovement[e.keyCode.toString()].y
+        //     * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
+        // }
+
       }
     }
   }
 
   stopAvatar(e) {
     this.vel.vx = 0;
-    this.checkBoundary();
+    this.keypressPOJO[e.keyCode.toString()] = false;
   }
   
   drawAvatar() {
