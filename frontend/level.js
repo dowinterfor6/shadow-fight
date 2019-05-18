@@ -365,16 +365,11 @@ export default class Level {
   }
 
   drawBackground() {
-    // this.ctx.beginPath();
-    // this.ctx.fillStyle = 'BLACK';
-    // this.ctx.rect(0, 0, this.dimensions.width, this.dimensions.height);
-    // this.ctx.fill();
-
     let background = new Image();
     background.src = 'frontend/assets/images/game-background.jpg';
-    background.onload = () => {
+    // background.onload = () => {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
-    }
+    // }
   }
 
   // TODO: Probably temporary

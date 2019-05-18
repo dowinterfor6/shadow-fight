@@ -19,7 +19,8 @@ const AVATAR_CONSTANTS = {
   MOVEMENT_SPEED: {
     x: 10,
     y: 30
-  }
+  },
+  MAX_HEALTH: 200
 }
 
 export default class Avatar {
@@ -39,6 +40,17 @@ export default class Avatar {
       vy: 0
     }
 
+    this.state = {
+      health: AVATAR_CONSTANTS.MAX_HEALTH,
+      basicAttacking: false,
+      damageDone: false,
+      basicAttackHitbox: {
+        w: 50,
+        h: 10
+      },
+      facing: playerNum === 1 ? 1 : -1
+    }
+
     this.paused = false;
     this.keyCodeMovement = this.playerNum === 1 ? 
       AVATAR_CONSTANTS.P1_MOVEMENT : AVATAR_CONSTANTS.P2_MOVEMENT;
@@ -53,6 +65,8 @@ export default class Avatar {
     this.stopAvatar = this.stopAvatar.bind(this);
     this.checkBoundary = this.checkBoundary.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
+    this.basicAttack = this.basicAttack.bind(this);
+    this.drawBasicAttack = this.drawBasicAttack.bind(this);
 
     //TODO: IS THERE A BETTER SOLUTION?
     document.addEventListener('keydown', this.moveAvatar);
@@ -65,6 +79,9 @@ export default class Avatar {
       this.updatePosition();
     }
     this.drawAvatar();
+    if (!this.paused) {
+      this.drawBasicAttack();
+    }
   }
 
   updatePosition() {
@@ -74,6 +91,7 @@ export default class Avatar {
         if (this.keyCodeMovement[key].x !== 0) {
           this.vel.vx = this.keyCodeMovement[key].x
             * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
+          this.state.facing = this.keyCodeMovement[key].x;
         };
         // Prevent infinite jump
         if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
@@ -130,6 +148,27 @@ export default class Avatar {
       this.vel.vy = 0;
     } else if (this.pos.y < 0) {
       this.pos.y = 0;
+    }
+  }
+
+  basicAttack() {
+    if (!this.state.basicAttacking) {
+      this.state.basicAttacking = true;
+      window.setTimeout(() => {
+        this.state.basicAttacking = false;
+      }, 250);
+    }
+  }
+  
+  drawBasicAttack() {
+    if (this.state.basicAttacking) {
+      this.ctx.fillStyle = 'Green';
+      this.ctx.fillRect(
+        this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
+        this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3,
+        this.state.basicAttackHitbox.w,
+        this.state.basicAttackHitbox.h
+      );
     }
   }
 }

@@ -67,6 +67,7 @@ export default class Arena {
     this.handlePause = this.handlePause.bind(this);
     this.handleMute = this.handleMute.bind(this);
     this.handleHelp = this.handleHelp.bind(this);
+    this.handleAttack = this.handleAttack.bind(this);
 
     this.play = this.play.bind(this);
     this.restart = this.restart.bind(this);
@@ -91,12 +92,15 @@ export default class Arena {
       this.ctx.canvas.removeEventListener('mousedown', this.handleMute);
       this.ctx.canvas.removeEventListener('mousedown', this.handleHelp);
       this.ctx.canvas.addEventListener('mousedown', this.handlePause);
+      document.addEventListener('keydown', this.handleAttack);
       // TODO: TEMPORARY
       if (this.paused) {
+        console.log('stahp');
         cancelAnimationFrame(this.animationFrame);
         this.level.animate(150, 5, true);
         this.player1.animate(true);
         this.player2.animate(true);
+        console.log('finish animation');
       } else {
         let gameState = this.level.animate(150, 5);
         this.player1.animate(false);
@@ -174,6 +178,13 @@ export default class Arena {
     
   }
 
+  drawHelp() {
+    // this.ctx.beginPath();
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
+    console.log('halp');
+  }
+
   handlePlay(e) {
     let clickPos = {
       x: e.pageX - this.documentOffsetX,
@@ -213,7 +224,7 @@ export default class Arena {
       }
     }
   }
-
+  
   handleHelp(e) {
     let clickPos = {
       x: e.pageX - this.documentOffsetX,
@@ -230,11 +241,15 @@ export default class Arena {
       }
     }
   }
-  
-  drawHelp() {
-    // this.ctx.beginPath();
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
-    console.log('halp');
+
+  handleAttack(e) {
+    switch (e.keyCode) {
+      case 74:
+        this.player1.basicAttack();
+        break;
+      case 97:
+        this.player2.basicAttack();
+        break;
+    }
   }
 }
