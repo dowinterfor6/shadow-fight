@@ -153,7 +153,7 @@ export default class Arena {
       this.ctx.fillStyle = 'WHITE';
   
       let header = new Image();
-      header.src = '/frontend/assets/images/header.png';
+      header.src = '/frontend/assets/images/header-white.png';
       header.onload = () => {
         this.ctx.drawImage(
           header, 
@@ -166,11 +166,6 @@ export default class Arena {
   
       this.ctx.font = '56px Trebuchet MS'
       this.ctx.fillText(
-        'Play now!',
-        this.dimensions.width / 2,
-        this.dimensions.height / 2 + 72
-      );
-      this.ctx.strokeText(
         'Play now!',
         this.dimensions.width / 2,
         this.dimensions.height / 2 + 72
