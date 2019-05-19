@@ -11,8 +11,8 @@ const COLOR_PALETTE = {
 
 const AVATAR_CONSTANTS = {
   AVATAR_DIMENSIONS: {
-    width: 50,
-    height: 150
+    width: 150,
+    height: 300
   }
 }
 
@@ -264,9 +264,9 @@ export default class Arena {
 
   checkAttackCollision(bound, attackingPlayer, otherPlayer) {
     let otherPlayerBound = {
-      x1: otherPlayer.pos.x,
+      x1: otherPlayer.pos.x - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
       y1: otherPlayer.pos.y,
-      x2: otherPlayer.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width,
+      x2: otherPlayer.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
       y2: otherPlayer.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
     };
     if (bound.x >= otherPlayerBound.x1 && bound.x <= otherPlayerBound.x2) {

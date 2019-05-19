@@ -175,7 +175,7 @@ export default class Avatar {
       basicAttacking: false,
       damageDone: false,
       basicAttackHitbox: {
-        w: AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 + 50,
+        w: AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 + 40,
         h: 10
       },
       basicAttackDamage: 10,
