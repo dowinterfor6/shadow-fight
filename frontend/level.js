@@ -203,9 +203,6 @@ export default class Level {
   }
 
   drawCurrentHealthBars(playerHealth, botHealth) {
-    // TODO: TEMPORARY HEALTH
-    playerHealth = (this.time / LEVEL_CONSTANTS.MAX_TIME) * LEVEL_CONSTANTS.MAX_HEALTH;
-    botHealth = (this.time / LEVEL_CONSTANTS.MAX_TIME) * LEVEL_CONSTANTS.MAX_HEALTH;
 
     if (playerHealth <= 0) {
       return 'bot';

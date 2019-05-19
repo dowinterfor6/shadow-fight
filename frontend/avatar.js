@@ -45,10 +45,12 @@ export default class Avatar {
       basicAttacking: false,
       damageDone: false,
       basicAttackHitbox: {
-        w: 50,
+        w: 65,
         h: 10
       },
-      facing: playerNum === 1 ? 1 : -1
+      basicAttackDamage: 10,
+      facing: playerNum === 1 ? 1 : -1,
+      basicAttackKeycode: playerNum === 1 ? 74 : 97
     }
 
     this.paused = false;
@@ -67,8 +69,10 @@ export default class Avatar {
     this.updatePosition = this.updatePosition.bind(this);
     this.basicAttack = this.basicAttack.bind(this);
     this.drawBasicAttack = this.drawBasicAttack.bind(this);
+    this.handleAttack = this.handleAttack.bind(this);
 
     //TODO: IS THERE A BETTER SOLUTION?
+    document.addEventListener('keydown', this.handleAttack);
     document.addEventListener('keydown', this.moveAvatar);
     document.addEventListener('keyup', this.stopAvatar);
   }
@@ -81,7 +85,17 @@ export default class Avatar {
     this.drawAvatar();
     if (!this.paused) {
       this.drawBasicAttack();
+      let bounds = {
+        x1: this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
+        y1: this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3,
+        x2: this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 
+          + this.state.facing * this.state.basicAttackHitbox.w,
+        y2: this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3 
+          + this.state.basicAttackHitbox.h
+      }
+      return bounds;
     }
+    return null;
   }
 
   updatePosition() {
@@ -156,6 +170,7 @@ export default class Avatar {
       this.state.basicAttacking = true;
       window.setTimeout(() => {
         this.state.basicAttacking = false;
+        this.state.damageDone = false;
       }, 250);
     }
   }
@@ -166,9 +181,15 @@ export default class Avatar {
       this.ctx.fillRect(
         this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
         this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3,
-        this.state.basicAttackHitbox.w,
+        this.state.facing * this.state.basicAttackHitbox.w,
         this.state.basicAttackHitbox.h
       );
+    }
+  }
+
+  handleAttack(e) {
+    if (e.keyCode === this.state.basicAttackKeycode) {
+      this.basicAttack();
     }
   }
 }

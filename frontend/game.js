@@ -9,6 +9,13 @@ const COLOR_PALETTE = {
   QUINTERNARY: '#ACC4CE'
 };
 
+const AVATAR_CONSTANTS = {
+  AVATAR_DIMENSIONS: {
+    width: 50,
+    height: 150
+  }
+}
+
 export default class Arena {
   constructor(canvas) {
     this.ctx = canvas.getContext('2d');
@@ -17,10 +24,6 @@ export default class Arena {
     this.paused = false;
     this.sound = false;
     this.helpModal = false;
-
-    this.level = new Level(this.ctx, this.dimensions);
-    this.player1 = new Avatar(this.ctx, this.dimensions, 1);
-    this.player2 = new Avatar(this.ctx, this.dimensions, 2);
 
     this.documentOffsetX = (document.body.clientWidth - this.dimensions.width) / 2;
     this.documentOffsetY = (document.body.clientHeight - 80 - this.dimensions.height) / 2;
@@ -76,13 +79,14 @@ export default class Arena {
   }
 
   restart() {
-    this.animate();
+    this.level = new Level(this.ctx, this.dimensions);
+    this.player1 = new Avatar(this.ctx, this.dimensions, 1);
+    this.player2 = new Avatar(this.ctx, this.dimensions, 2);
+    this.paused = false;
+    this.play();
   }
   
   play() {
-    // TODO: Maybe not the best place to put this
-    this.gameOver = false;
-    this.paused = false;
     this.ctx.canvas.removeEventListener('mousedown', this.handlePlay);
     this.animationFrame = requestAnimationFrame(this.animate.bind(this));
   }
@@ -92,7 +96,7 @@ export default class Arena {
       this.ctx.canvas.removeEventListener('mousedown', this.handleMute);
       this.ctx.canvas.removeEventListener('mousedown', this.handleHelp);
       this.ctx.canvas.addEventListener('mousedown', this.handlePause);
-      document.addEventListener('keydown', this.handleAttack);
+      // document.addEventListener('keydown', this.handleAttack);
       // TODO: TEMPORARY
       if (this.paused) {
         console.log('stahp');
@@ -100,11 +104,16 @@ export default class Arena {
         this.level.animate(150, 5, true);
         this.player1.animate(true);
         this.player2.animate(true);
-        console.log('finish animation');
       } else {
-        let gameState = this.level.animate(150, 5);
-        this.player1.animate(false);
-        this.player2.animate(false);
+        let gameState = this.level.animate(this.player1.state.health, this.player2.state.health);
+        let p1AttackHitbox = this.player1.animate(false);
+        let p2AttackHitbox = this.player2.animate(false);
+        if (this.player1.state.basicAttacking && !this.player1.state.damageDone) {
+          this.checkAttackCollision(p1AttackHitbox, this.player1, this.player2);
+        }
+        if (this.player2.state.basicAttacking && !this.player2.state.damageDone) {
+          this.checkAttackCollision(p2AttackHitbox, this.player2, this.player1);
+        }
         if (gameState === 'timeUp') {
           console.log(gameState);
           this.gameOver = true;
@@ -192,7 +201,8 @@ export default class Arena {
     }
     if (clickPos.x >= this.playPos.x && clickPos.x <= this.playPos.x + this.playDimensions.dx) {
       if (clickPos.y >= this.playPos.y && clickPos.y <= this.playPos.y + this.playDimensions.dy) {
-        this.play();
+        this.gameOver = false;
+        this.restart();
       }
     }
   }
@@ -252,4 +262,25 @@ export default class Arena {
         break;
     }
   }
+
+  checkAttackCollision(bound, attackingPlayer, otherPlayer) {
+    let otherPlayerBound = {
+      x1: otherPlayer.pos.x,
+      y1: otherPlayer.pos.y,
+      x2: otherPlayer.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width,
+      y2: otherPlayer.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
+    };
+    if (
+      bound.x1 >= otherPlayerBound.x1 && bound.x1 <= otherPlayerBound.x2 ||
+      bound.x2 >= otherPlayerBound.x1 && bound.x2 <= otherPlayerBound.x2
+      ) {
+      if (
+        bound.y1 >= otherPlayerBound.y1 && bound.y1 <= otherPlayerBound.y2 ||
+        bound.y2 >= otherPlayerBound.y1 && bound.y2 <= otherPlayerBound.y2
+        ) {
+        attackingPlayer.state.damageDone = true;
+        otherPlayer.state.health -= attackingPlayer.state.basicAttackDamage;
+      };
+    };
+  };
 }
