@@ -218,6 +218,39 @@ export default class Arena {
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
     this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
     console.log('halp');
+
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    this.ctx.fillRect(120, 60, this.dimensions.width - 240, this.dimensions.height - 120);
+
+    this.ctx.textAlign = 'left';
+    this.ctx.font = '56px Arial';
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillText('How to play:', 210, 120);
+
+    this.ctx.font = '24px Trebuchet MS';
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillText('Player 1: W = Jump, A = Left, D = Right, J = Attack', 210, 150);
+    this.ctx.fillText('Player 2: ^ = Jump, < = Left, > = Right, 1 (numpad) = Attack', 210, 180);
+    this.ctx.fillText('You have until the time runs out to defeat the other player!', 210, 210);
+    this.ctx.fillText('Move erratically and jump to avoid attacks and outsmart your opponent.', 210, 240);
+
+    this.ctx.font = '56px Arial';
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillText('Credits:', 210, 340);
+
+    this.ctx.font = '24px Trebuchet MS';
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillText('Starting screen: http://www.avoidingthepuddle.com/news/2015/12/21/...', 210, 370);
+    this.ctx.fillText('complete-batch-of-tekken-7-fated-retribution-images-in-high.html', 210, 400);
+    this.ctx.fillText('Sakura petals: https://www.123rf.com/photo_109774081_stock-vector-...', 210, 430);
+    this.ctx.fillText('sakura-petals-falling-down-romantic-pink-silky-medium-flowers-sparse-...', 210, 460);
+    this.ctx.fillText('flying-cherry-petals-top-gradie.html', 210, 490);
+    this.ctx.fillText('Snowflakes: https://www.freepik.com/free-photos-vectors/christmas...', 210, 520);
+    this.ctx.fillText('(Christmas vector created by freepik)', 210, 550);
+    this.ctx.fillText('Arena background: https://wallpapercave.com/w/wp2603480', 210, 580);
+    this.ctx.fillText('Ryu spritesheet: https://www.deviantart.com/sil3nt-j/art/...', 210, 610);
+    this.ctx.fillText('Ryu-Street-Fighter-1-Sprite-Sheet-769011713 (by sil3nt-j)', 210, 640);
+    this.ctx.fillText('Help and sound icons: https://www.flaticon.com (made by Freepik)', 210, 670);
   }
 
   handlePlay(e) {
