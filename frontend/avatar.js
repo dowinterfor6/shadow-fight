@@ -7,13 +7,13 @@ const AVATAR_CONSTANTS = {
   P1_MOVEMENT: {
     87: { x: 0, y: -1 },
     65: { x: -1, y: 0 },
-    83: { x: 0, y: 1 },
+    // 83: { x: 0, y: 1 },
     68: { x: 1, y: 0 },
   },
   P2_MOVEMENT: {
     38: { x: 0, y: -1 },
     37: { x: -1, y: 0 },
-    40: { x: 0, y: 1 },
+    // 40: { x: 0, y: 1 },
     39: { x: 1, y: 0 },
   },
   MOVEMENT_SPEED: {
