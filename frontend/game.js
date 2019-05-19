@@ -100,7 +100,7 @@ export default class Arena {
       // TODO: TEMPORARY
       if (this.paused) {
         cancelAnimationFrame(this.animationFrame);
-        this.level.animate(150, 5, true);
+        this.level.animate(this.player1.state.health, this.player2.state.health, true);
         this.player1.animate(true);
         this.player2.animate(true);
       } else {
