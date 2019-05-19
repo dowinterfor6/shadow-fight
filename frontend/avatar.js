@@ -20,7 +20,123 @@ const AVATAR_CONSTANTS = {
     x: 10,
     y: 30
   },
-  MAX_HEALTH: 200
+  MAX_HEALTH: 200,
+  SRITESHEET: {
+    WALKING: {
+      1: {
+        x: 0,
+        y: 202,
+        w: 50,
+        h: 88
+      },
+      2: {
+        x: 50,
+        y: 202,
+        w: 50,
+        h: 88
+      },
+      3: {
+        x: 100,
+        y: 202,
+        w: 65,
+        h: 88
+      },
+      4: {
+        x: 165,
+        y: 202,
+        w: 75,
+        h: 88
+      },
+      5: {
+        x: 240,
+        y: 202,
+        w: 60,
+        h: 88
+      },
+      6: {
+        x: 300,
+        y: 202,
+        w: 70,
+        h: 88
+      },
+      7: {
+        x: 370,
+        y: 202,
+        w: 80,
+        h: 88
+      }
+    },
+    IDLE: {
+      1: {
+        x: 0,
+        y: 300,
+        w: 75,
+        h: 96
+      },
+      2: {
+        x: 75,
+        y: 300,
+        w: 75,
+        h: 96
+      },
+      3: {
+        x: 150,
+        y: 300,
+        w: 75,
+        h: 96
+      },
+      4: {
+        x: 225,
+        y: 300,
+        w: 75,
+        h: 96
+      },
+      5: {
+        x: 300,
+        y: 300,
+        w: 75,
+        h: 96
+      },
+      6: {
+        x: 375,
+        y: 300,
+        w: 75,
+        h: 96
+      }
+    },
+    JUMP: {
+      1: {
+        x: 0,
+        y: 95,
+        w: 74,
+        h: 107
+      },
+      2: {
+        x: 74,
+        y: 95,
+        w: 74,
+        h: 107
+      },
+      3: {
+        x: 148,
+        y: 95,
+        w: 74,
+        h: 107
+      },
+      4: {
+        x: 222,
+        y: 95,
+        w: 74,
+        h: 107
+      },
+      5: {
+        x: 296,
+        y: 95,
+        w: 74,
+        h: 107
+      }
+    }
+  }
 }
 
 export default class Avatar {
@@ -50,7 +166,8 @@ export default class Avatar {
       },
       basicAttackDamage: 10,
       facing: playerNum === 1 ? 1 : -1,
-      basicAttackKeycode: playerNum === 1 ? 74 : 97
+      basicAttackKeycode: playerNum === 1 ? 74 : 97,
+      movement: 'idle'
     }
 
     this.paused = false;
@@ -60,6 +177,10 @@ export default class Avatar {
     Object.keys(this.keyCodeMovement).forEach((key) => {
       this.keypressPOJO[key] = false;
     });
+    this.spriteSheet = new Image();
+    this.spriteSheet.src = '/frontend/assets/images/ryu-sprite-sheet.png';
+
+    this.animationTimer = 0;
 
     this.animate = this.animate.bind(this);
     this.drawAvatar = this.drawAvatar.bind(this);
@@ -79,8 +200,12 @@ export default class Avatar {
 
   animate(paused) {
     this.paused = !!paused;
+    this.animationTimer += 0.05;
     if (!this.paused) {
       this.updatePosition();
+    }
+    if (this.vel.vx === 0 && this.vel.vy === 0) {
+      this.state.movement = 'idle';
     }
     this.drawAvatar();
     if (!this.paused) {
@@ -106,12 +231,16 @@ export default class Avatar {
           this.vel.vx = this.keyCodeMovement[key].x
             * AVATAR_CONSTANTS.MOVEMENT_SPEED.x;
           this.state.facing = this.keyCodeMovement[key].x;
+          if (this.state.movement !== 'jump') {
+            this.state.movement = 'moveX';
+          };
         };
         // Prevent infinite jump
         if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
           if (this.keyCodeMovement[key].y !== 0) {
             this.vel.vy = this.keyCodeMovement[key].y
               * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
+            this.state.movement = 'jump';
           };
         };
       }
@@ -139,10 +268,37 @@ export default class Avatar {
   
   drawAvatar() {
     this.ctx.fillStyle = this.playerNum === 1 ? 'Blue' : 'Red';
-    this.ctx.fillRect(
-      this.pos.x, 
-      this.pos.y, 
-      AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width, 
+    // this.ctx.fillRect(
+    //   this.pos.x, 
+    //   this.pos.y, 
+    //   AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width, 
+    //   AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
+    // );
+    let currentSpriteSliceIdx;
+    let currentSpriteSlice;
+    switch (this.state.movement) {
+      case 'idle':
+        currentSpriteSliceIdx = 1 + Math.round(this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.IDLE).length - 1));
+        currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.IDLE[currentSpriteSliceIdx];
+        break;
+      case 'moveX':
+        currentSpriteSliceIdx = 1 + Math.round(this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.WALKING).length - 1));
+        currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.WALKING[currentSpriteSliceIdx];
+        break;
+      case 'jump':
+        currentSpriteSliceIdx = 1 + Math.round(this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.JUMP).length - 1));
+        currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.JUMP[currentSpriteSliceIdx];
+        break;
+    }
+    this.ctx.drawImage(
+      this.spriteSheet,
+      currentSpriteSlice.x,
+      currentSpriteSlice.y,
+      currentSpriteSlice.w,
+      currentSpriteSlice.h,
+      this.pos.x,
+      this.pos.y,
+      AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width,
       AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
     );
   }
