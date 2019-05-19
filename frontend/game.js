@@ -99,7 +99,6 @@ export default class Arena {
       // document.addEventListener('keydown', this.handleAttack);
       // TODO: TEMPORARY
       if (this.paused) {
-        console.log('stahp');
         cancelAnimationFrame(this.animationFrame);
         this.level.animate(150, 5, true);
         this.player1.animate(true);
