@@ -287,11 +287,11 @@ export default class Avatar {
         currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.IDLE[currentSpriteSliceIdx];
         break;
       case 'moveX':
-        currentSpriteSliceIdx = 1 + Math.round(this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.WALKING).length - 1));
+        currentSpriteSliceIdx = 1 + Math.round(2 * this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.WALKING).length - 1));
         currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.WALKING[currentSpriteSliceIdx];
         break;
       case 'jump':
-        currentSpriteSliceIdx = 1 + Math.round(this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.JUMP).length - 1));
+        currentSpriteSliceIdx = 1 + Math.round(2 * this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.JUMP).length - 1));
         currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.JUMP[currentSpriteSliceIdx];
         break;
       case 'attack':
@@ -350,17 +350,8 @@ export default class Avatar {
   
   drawBasicAttack() {
     if (this.state.basicAttacking) {
-      this.ctx.fillStyle = 'Green';
-      this.ctx.fillRect(
-        this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
-        this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3,
-        this.state.facing * this.state.basicAttackHitbox.w,
-        this.state.basicAttackHitbox.h
-      );
       this.state.movement = 'attack';
-    } else {
-      this.state.movement = 'idle';
-    }
+    };
   }
 
   handleAttack(e) {
