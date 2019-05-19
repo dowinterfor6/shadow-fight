@@ -24,6 +24,7 @@ export default class Arena {
     this.paused = false;
     this.sound = false;
     this.helpModal = false;
+    this.winner = null;
 
     this.documentOffsetX = (document.body.clientWidth - this.dimensions.width) / 2;
     this.documentOffsetY = (document.body.clientHeight - 80 - this.dimensions.height) / 2;
@@ -83,6 +84,7 @@ export default class Arena {
     this.player1 = new Avatar(this.ctx, this.dimensions, 1);
     this.player2 = new Avatar(this.ctx, this.dimensions, 2);
     this.paused = false;
+    this.winner = null;
     this.play();
   }
   
@@ -104,7 +106,7 @@ export default class Arena {
         this.player1.animate(true);
         this.player2.animate(true);
       } else {
-        let gameState = this.level.animate(this.player1.state.health, this.player2.state.health);
+        this.winner = this.level.animate(this.player1.state.health, this.player2.state.health);
         let p1AttackHitbox = this.player1.animate(false);
         let p2AttackHitbox = this.player2.animate(false);
         if (this.player1.state.basicAttacking && !this.player1.state.damageDone) {
@@ -113,11 +115,9 @@ export default class Arena {
         if (this.player2.state.basicAttacking && !this.player2.state.damageDone) {
           this.checkAttackCollision(p2AttackHitbox, this.player2, this.player1);
         }
-        if (gameState === 'timeUp') {
-          console.log(gameState);
+        if (this.winner === 'timeUp') {
           this.gameOver = true;
-        } else if (['player', 'bot'].includes(gameState)) {
-          console.log(gameState + ' wins!');
+        } else if (['player1', 'player2'].includes(this.winner)) {
           this.gameOver = true;
         }
         requestAnimationFrame(this.animate.bind(this));
@@ -136,11 +136,6 @@ export default class Arena {
   // ONLY FOR STARTING SCREEN
   drawBackground() {
     this.ctx.canvas.addEventListener('mousedown', this.handlePlay);
-    
-    // TODO: Get a good background
-    // this.ctx.beginPath();
-    // this.ctx.fillStyle = 'grey';
-    // this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
 
     let background = new Image();
     background.src = '/frontend/assets/images/start-background.jpg';
@@ -176,12 +171,44 @@ export default class Arena {
         );
       }
   
-      this.ctx.font = '56px Trebuchet MS'
-      this.ctx.fillText(
-        'Play now!',
-        this.dimensions.width / 2,
-        this.dimensions.height / 2 + 72
-      );
+      switch (this.winner) {
+        case null:
+          this.ctx.font = '56px Trebuchet MS';
+          this.ctx.fillText(
+            'Play now!',
+            this.dimensions.width / 2,
+            this.dimensions.height / 2 + 72
+          );
+          break;
+        case 'timeUp':
+          this.ctx.font = '36px Trebuchet MS';
+          this.ctx.fillText(
+            'Time ran out... have you tried attacking?',
+            this.dimensions.width / 2,
+            this.dimensions.height / 2 + 12
+          );
+          this.ctx.font = '56px Trebuchet MS';
+          this.ctx.fillText(
+            'Play again?',
+            this.dimensions.width / 2,
+            this.dimensions.height / 2 + 72
+          );
+          break;
+        default:
+          this.ctx.font = '36px Trebuchet MS';
+          this.ctx.fillText(
+            `Congratulations, ${this.winner} won!`,
+            this.dimensions.width / 2,
+            this.dimensions.height / 2 + 8
+          );
+          this.ctx.font = '56px Trebuchet MS';
+          this.ctx.fillText(
+            'Play again?',
+            this.dimensions.width / 2,
+            this.dimensions.height / 2 + 72
+          );
+          break;
+      }
     };
     
   }

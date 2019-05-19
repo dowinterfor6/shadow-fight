@@ -9,7 +9,7 @@ const COLOR_PALETTE = {
 };
 
 const LEVEL_CONSTANTS = {
-  MAX_TIME: 60 * 120,
+  MAX_TIME: 60 * 12,
   TIMER_TEXT_HEIGHT: 75,
   TIMER_RADIUS: 45,
   MAX_HEALTH: 200,
@@ -205,9 +205,9 @@ export default class Level {
   drawCurrentHealthBars(playerHealth, botHealth) {
 
     if (playerHealth <= 0) {
-      return 'bot';
+      return 'player2';
     } else if (botHealth <= 0) {
-      return 'player';
+      return 'player1';
     };
 
     let currentHealth = LEVEL_CONSTANTS.HEALTH_BAR.width * playerHealth / LEVEL_CONSTANTS.MAX_HEALTH;
@@ -279,7 +279,7 @@ export default class Level {
 
   drawNames() {
     let playerName = 'Player 1';
-    let botName = 'Ginger Baker';
+    let botName = 'Player 2';
     let playerNamePos = {
       x: this.playerHpPos.x - LEVEL_CONSTANTS.OFFSET,
       y: this.playerHpPos.y + LEVEL_CONSTANTS.TIMER_RADIUS + 4
