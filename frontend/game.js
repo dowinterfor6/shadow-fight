@@ -269,17 +269,25 @@ export default class Arena {
       x2: otherPlayer.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width,
       y2: otherPlayer.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
     };
-    if (
-      bound.x1 >= otherPlayerBound.x1 && bound.x1 <= otherPlayerBound.x2 ||
-      bound.x2 >= otherPlayerBound.x1 && bound.x2 <= otherPlayerBound.x2
-      ) {
-      if (
-        bound.y1 >= otherPlayerBound.y1 && bound.y1 <= otherPlayerBound.y2 ||
-        bound.y2 >= otherPlayerBound.y1 && bound.y2 <= otherPlayerBound.y2
-        ) {
+    if (bound.x >= otherPlayerBound.x1 && bound.x <= otherPlayerBound.x2) {
+      if (bound.y >= otherPlayerBound.y1 && bound.y <= otherPlayerBound.y2) {
         attackingPlayer.state.damageDone = true;
         otherPlayer.state.health -= attackingPlayer.state.basicAttackDamage;
-      };
-    };
+      }
+    }
+    // if (
+    //   bound.x1 >= otherPlayerBound.x1 && bound.x1 <= otherPlayerBound.x2 ||
+    //   bound.x2 >= otherPlayerBound.x1 && bound.x2 <= otherPlayerBound.x2
+    //   ) {
+    //   if (
+    //     bound.y1 >= otherPlayerBound.y1 && bound.y1 <= otherPlayerBound.y2 ||
+    //     bound.y2 >= otherPlayerBound.y1 && bound.y2 <= otherPlayerBound.y2
+    //     ) {
+    //     attackingPlayer.state.damageDone = true;
+    //     otherPlayer.state.health -= attackingPlayer.state.basicAttackDamage;
+    //   };
+    // };
+
+
   };
 }

@@ -161,7 +161,7 @@ export default class Avatar {
       basicAttacking: false,
       damageDone: false,
       basicAttackHitbox: {
-        w: 65,
+        w: AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 + 65,
         h: 10
       },
       basicAttackDamage: 10,
@@ -210,13 +210,17 @@ export default class Avatar {
     this.drawAvatar();
     if (!this.paused) {
       this.drawBasicAttack();
+      // let bounds = {
+      //   x1: this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
+      //   y1: this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3,
+      //   x2: this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 
+      //     + this.state.facing * this.state.basicAttackHitbox.w,
+      //   y2: this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3 
+      //     + this.state.basicAttackHitbox.h
+      // }
       let bounds = {
-        x1: this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
-        y1: this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3,
-        x2: this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 
-          + this.state.facing * this.state.basicAttackHitbox.w,
-        y2: this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3 
-          + this.state.basicAttackHitbox.h
+        x: this.pos.x + this.state.facing * this.state.basicAttackHitbox.w,
+        y: this.pos.y + this.state.basicAttackHitbox.h
       }
       return bounds;
     }
