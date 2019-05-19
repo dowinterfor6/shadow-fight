@@ -72,6 +72,7 @@ export default class Arena {
     this.handleMute = this.handleMute.bind(this);
     this.handleHelp = this.handleHelp.bind(this);
     this.handleAttack = this.handleAttack.bind(this);
+    this.handleModal = this.handleModal.bind(this);
 
     this.play = this.play.bind(this);
     this.restart = this.restart.bind(this);
@@ -214,10 +215,10 @@ export default class Arena {
   }
 
   drawHelp() {
-    // this.ctx.beginPath();
+    this.ctx.canvas.addEventListener('mousedown', this.handleModal);
+
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
     this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
-    console.log('halp');
 
     this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
     this.ctx.fillRect(120, 60, this.dimensions.width - 240, this.dimensions.height - 120);
@@ -319,6 +320,19 @@ export default class Arena {
       case 97:
         this.player2.basicAttack();
         break;
+    }
+  }
+
+  handleModal(e) {
+    let clickPos = {
+      x: e.pageX - this.documentOffsetX,
+      y: e.pageY - this.documentOffsetY - 80
+    }
+    if (clickPos.x < 120 || clickPos.x > this.dimensions.width - 120
+      || clickPos.y < 60 || clickPos.y > this.dimensions.height - 60) {
+      this.ctx.canvas.removeEventListener('mousedown', this.handleModal);
+      this.helpModal = !this.helpModal;
+      this.animate();
     }
   }
 
