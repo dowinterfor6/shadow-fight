@@ -109,19 +109,19 @@ export default class Level {
   }
 
   drawTimerText() {
-    this.ctx.font = '56px Trebuchet MS';
+    this.ctx.font = '48px Trebuchet MS';
     this.ctx.textAlign = 'center';
     this.ctx.fillStyle = 'WHITE';
     this.ctx.strokeStyle = COLOR_PALETTE.PRIMARY;
     this.ctx.fillText(
       `${Math.round(this.time / 60)}`,
       this.dimensions.width / 2,
-      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 12
+      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 10
     );
     this.ctx.strokeText(
       `${Math.round(this.time / 60)}`,
       this.dimensions.width / 2,
-      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 12
+      LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT + 10
     );
   }
 
