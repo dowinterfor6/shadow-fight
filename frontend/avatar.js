@@ -135,6 +135,20 @@ const AVATAR_CONSTANTS = {
         w: 74,
         h: 107
       }
+    },
+    ATTACK: {
+      1: {
+        x: 0,
+        y: 0,
+        w: 104,
+        h: 95
+      },
+      2: {
+        x: 104,
+        y: 0,
+        w: 104,
+        h: 95
+      }
     }
   }
 }
@@ -161,7 +175,7 @@ export default class Avatar {
       basicAttacking: false,
       damageDone: false,
       basicAttackHitbox: {
-        w: AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 + 65,
+        w: AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 + 50,
         h: 10
       },
       basicAttackDamage: 10,
@@ -207,24 +221,16 @@ export default class Avatar {
     if (this.vel.vx === 0 && this.vel.vy === 0) {
       this.state.movement = 'idle';
     }
-    this.drawAvatar();
+    let bounds;
     if (!this.paused) {
       this.drawBasicAttack();
-      // let bounds = {
-      //   x1: this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
-      //   y1: this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3,
-      //   x2: this.pos.x + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 
-      //     + this.state.facing * this.state.basicAttackHitbox.w,
-      //   y2: this.pos.y + AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height / 3 
-      //     + this.state.basicAttackHitbox.h
-      // }
-      let bounds = {
+      bounds = {
         x: this.pos.x + this.state.facing * this.state.basicAttackHitbox.w,
         y: this.pos.y + this.state.basicAttackHitbox.h
       }
-      return bounds;
     }
-    return null;
+    this.drawAvatar();
+    return bounds;
   }
 
   updatePosition() {
@@ -274,6 +280,7 @@ export default class Avatar {
     this.ctx.fillStyle = this.playerNum === 1 ? 'Blue' : 'Red';
     let currentSpriteSliceIdx;
     let currentSpriteSlice;
+    let attackOffset = 0;
     switch (this.state.movement) {
       case 'idle':
         currentSpriteSliceIdx = 1 + Math.round(this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.IDLE).length - 1));
@@ -286,6 +293,11 @@ export default class Avatar {
       case 'jump':
         currentSpriteSliceIdx = 1 + Math.round(this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.JUMP).length - 1));
         currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.JUMP[currentSpriteSliceIdx];
+        break;
+      case 'attack':
+        currentSpriteSliceIdx = 1 + Math.round(this.animationTimer % (Object.keys(AVATAR_CONSTANTS.SRITESHEET.ATTACK).length - 1));
+        currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.ATTACK[currentSpriteSliceIdx];
+        attackOffset = 50;
         break;
     }
     this.ctx.save();
@@ -302,7 +314,7 @@ export default class Avatar {
       currentSpriteSlice.h,
       this.state.facing * this.pos.x - offset,
       this.pos.y,
-      AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width,
+      AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width + attackOffset,
       AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
     );
     this.ctx.restore();
@@ -345,6 +357,9 @@ export default class Avatar {
         this.state.facing * this.state.basicAttackHitbox.w,
         this.state.basicAttackHitbox.h
       );
+      this.state.movement = 'attack';
+    } else {
+      this.state.movement = 'idle';
     }
   }
 

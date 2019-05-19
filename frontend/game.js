@@ -275,19 +275,5 @@ export default class Arena {
         otherPlayer.state.health -= attackingPlayer.state.basicAttackDamage;
       }
     }
-    // if (
-    //   bound.x1 >= otherPlayerBound.x1 && bound.x1 <= otherPlayerBound.x2 ||
-    //   bound.x2 >= otherPlayerBound.x1 && bound.x2 <= otherPlayerBound.x2
-    //   ) {
-    //   if (
-    //     bound.y1 >= otherPlayerBound.y1 && bound.y1 <= otherPlayerBound.y2 ||
-    //     bound.y2 >= otherPlayerBound.y1 && bound.y2 <= otherPlayerBound.y2
-    //     ) {
-    //     attackingPlayer.state.damageDone = true;
-    //     otherPlayer.state.health -= attackingPlayer.state.basicAttackDamage;
-    //   };
-    // };
-
-
   };
 }
