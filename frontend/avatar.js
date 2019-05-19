@@ -268,12 +268,6 @@ export default class Avatar {
   
   drawAvatar() {
     this.ctx.fillStyle = this.playerNum === 1 ? 'Blue' : 'Red';
-    // this.ctx.fillRect(
-    //   this.pos.x, 
-    //   this.pos.y, 
-    //   AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width, 
-    //   AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
-    // );
     let currentSpriteSliceIdx;
     let currentSpriteSlice;
     switch (this.state.movement) {
@@ -290,17 +284,20 @@ export default class Avatar {
         currentSpriteSlice = AVATAR_CONSTANTS.SRITESHEET.JUMP[currentSpriteSliceIdx];
         break;
     }
+    this.ctx.save();
+    this.ctx.scale(this.state.facing, 1);
     this.ctx.drawImage(
       this.spriteSheet,
       currentSpriteSlice.x,
       currentSpriteSlice.y,
       currentSpriteSlice.w,
       currentSpriteSlice.h,
-      this.pos.x,
+      this.state.facing * this.pos.x,
       this.pos.y,
       AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width,
       AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
     );
+    this.ctx.restore();
   }
 
   checkBoundary() {
