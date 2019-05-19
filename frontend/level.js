@@ -9,7 +9,7 @@ const COLOR_PALETTE = {
 };
 
 const LEVEL_CONSTANTS = {
-  MAX_TIME: 60 * 12,
+  MAX_TIME: 60 * 120,
   TIMER_TEXT_HEIGHT: 75,
   TIMER_RADIUS: 45,
   MAX_HEALTH: 200,
@@ -332,6 +332,9 @@ export default class Level {
       this.ctx.closePath();
       this.ctx.fill();
       this.ctx.stroke();
+
+      this.ctx.fillStyle = 'white';
+      this.ctx.lineWidth = 1.5;
 
       this.ctx.textAlign = 'center';
       this.ctx.font = '56px Trebuchet MS';
