@@ -79,7 +79,7 @@ export default class Level {
     this.drawHealthBars();
     winner = this.drawCurrentHealthBars(playerHealth, botHealth);
     this.drawNames();
-    this.drawFloor();
+    // this.drawFloor();
     paused ? this.paused = true : this.paused = false;
     this.drawPause();
       

@@ -1,7 +1,7 @@
 const AVATAR_CONSTANTS = {
   AVATAR_DIMENSIONS: {
-    width: 50,
-    height: 150
+    width: 150,
+    height: 300
   },
   GRAVITY: -1.8,
   P1_MOVEMENT: {
@@ -27,79 +27,79 @@ const AVATAR_CONSTANTS = {
         x: 0,
         y: 202,
         w: 50,
-        h: 88
+        h: 98
       },
       2: {
         x: 50,
         y: 202,
         w: 50,
-        h: 88
+        h: 98
       },
       3: {
         x: 100,
         y: 202,
         w: 65,
-        h: 88
+        h: 98
       },
       4: {
         x: 165,
         y: 202,
         w: 75,
-        h: 88
+        h: 98
       },
       5: {
         x: 240,
         y: 202,
         w: 60,
-        h: 88
+        h: 98
       },
       6: {
         x: 300,
-        y: 202,
+        y: 203,
         w: 70,
-        h: 88
+        h: 97
       },
       7: {
         x: 370,
         y: 202,
         w: 80,
-        h: 88
+        h: 98
       }
     },
     IDLE: {
       1: {
         x: 0,
-        y: 300,
+        y: 301,
         w: 75,
         h: 96
       },
       2: {
         x: 75,
-        y: 300,
+        y: 301,
         w: 75,
         h: 96
       },
       3: {
         x: 150,
-        y: 300,
+        y: 301,
         w: 75,
         h: 96
       },
       4: {
         x: 225,
-        y: 300,
+        y: 301,
         w: 75,
         h: 96
       },
       5: {
         x: 300,
-        y: 300,
+        y: 301,
         w: 75,
         h: 96
       },
       6: {
         x: 375,
-        y: 300,
+        y: 301,
         w: 75,
         h: 96
       }
@@ -286,13 +286,17 @@ export default class Avatar {
     }
     this.ctx.save();
     this.ctx.scale(this.state.facing, 1);
+    let offset = 0;
+    if (this.state.facing === -1) {
+      offset = AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width;
+    }
     this.ctx.drawImage(
       this.spriteSheet,
       currentSpriteSlice.x,
       currentSpriteSlice.y,
       currentSpriteSlice.w,
       currentSpriteSlice.h,
-      this.state.facing * this.pos.x,
+      this.state.facing * this.pos.x - offset,
       this.pos.y,
       AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width,
       AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height
