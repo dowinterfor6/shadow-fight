@@ -237,21 +237,23 @@ export default class Arena {
 
     this.ctx.font = '56px Arial';
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText('Credits:', 210, 340);
+    this.ctx.fillText('Credits:', 210, 290);
 
-    this.ctx.font = '24px Trebuchet MS';
+    this.ctx.font = '18px Trebuchet MS';
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText('Starting screen: http://www.avoidingthepuddle.com/news/2015/12/21/...', 210, 370);
-    this.ctx.fillText('complete-batch-of-tekken-7-fated-retribution-images-in-high.html', 210, 400);
-    this.ctx.fillText('Sakura petals: https://www.123rf.com/photo_109774081_stock-vector-...', 210, 430);
-    this.ctx.fillText('sakura-petals-falling-down-romantic-pink-silky-medium-flowers-sparse-...', 210, 460);
-    this.ctx.fillText('flying-cherry-petals-top-gradie.html', 210, 490);
-    this.ctx.fillText('Snowflakes: https://www.freepik.com/free-photos-vectors/christmas...', 210, 520);
-    this.ctx.fillText('(Christmas vector created by freepik)', 210, 550);
-    this.ctx.fillText('Arena background: https://wallpapercave.com/w/wp2603480', 210, 580);
-    this.ctx.fillText('Ryu spritesheet: https://www.deviantart.com/sil3nt-j/art/...', 210, 610);
-    this.ctx.fillText('Ryu-Street-Fighter-1-Sprite-Sheet-769011713 (by sil3nt-j)', 210, 640);
-    this.ctx.fillText('Help and sound icons: https://www.flaticon.com (made by Freepik)', 210, 670);
+    this.ctx.fillText('Starting screen: http://www.avoidingthepuddle.com/news/2015/12/21/...', 210, 320);
+    this.ctx.fillText('complete-batch-of-tekken-7-fated-retribution-images-in-high.html', 210, 340);
+    this.ctx.fillText('Sakura petals: https://www.123rf.com/photo_109774081_stock-vector-...', 210, 360);
+    this.ctx.fillText('sakura-petals-falling-down-romantic-pink-silky-medium-flowers-sparse-...', 210, 380);
+    this.ctx.fillText('flying-cherry-petals-top-gradie.html', 210, 400);
+    this.ctx.fillText('Snowflakes: https://www.freepik.com/free-photos-vectors/christmas...', 210, 420);
+    this.ctx.fillText('(Christmas vector created by freepik)', 210, 440);
+    this.ctx.fillText('Arena background: https://wallpapercave.com/w/wp2603480', 210, 460);
+    this.ctx.fillText('Ryu spritesheet: https://www.deviantart.com/sil3nt-j/art/...', 210, 480);
+    this.ctx.fillText('Ryu-Street-Fighter-1-Sprite-Sheet-769011713 (by sil3nt-j)', 210, 500);
+    this.ctx.fillText('Help and sound icons: https://www.flaticon.com (made by Freepik)', 210, 520);
+    this.ctx.fillText('Music: Dragon Ball Super - Ultra instinct | Instrumental Epic Rock COVER', 210, 540);
+    this.ctx.fillText('Friedrich Habetler Music', 210, 560);
   }
 
   handlePlay(e) {
