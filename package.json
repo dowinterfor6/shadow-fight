@@ -4,9 +4,9 @@
   "description": "Shadow Fight - Inspired by Street Fighter/Tekken",
   "main": "index.js",
   "scripts": {
-    "postinstall": "webpack",
     "webpack": "webpack --watch --mode=development",
-    "start": "node bundle.js"
+    "start": "node server.js",
+    "heroku-postbuild": "webpack -p"
   },
   "repository": {
     "type": "git",
