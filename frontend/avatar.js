@@ -162,7 +162,7 @@ export default class Avatar {
     let startingX = playerNum === 1 ? 50 : this.dimensions.width - 50;
     this.pos = {
       x: startingX - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2,
-      y: this.dimensions.height - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height - 150
+      y: this.dimensions.height - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height - 1
     };
 
     this.vel = {
@@ -246,7 +246,7 @@ export default class Avatar {
           };
         };
         // Prevent infinite jump
-        if (this.pos.y === this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
+        if (this.pos.y === this.dimensions.height - 1 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
           if (this.keyCodeMovement[key].y !== 0) {
             this.vel.vy = this.keyCodeMovement[key].y
               * AVATAR_CONSTANTS.MOVEMENT_SPEED.y;
@@ -330,8 +330,8 @@ export default class Avatar {
       this.pos.x = this.dimensions.width - maxOffset - minOffset;
       this.vel.vx = 0;
     };
-    if (this.pos.y > this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
-      this.pos.y = this.dimensions.height - 155 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height;
+    if (this.pos.y > this.dimensions.height - 1 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height) {
+      this.pos.y = this.dimensions.height - 1 - AVATAR_CONSTANTS.AVATAR_DIMENSIONS.height;
       this.vel.vy = 0;
     } else if (this.pos.y < 0) {
       this.pos.y = 0;

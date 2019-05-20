@@ -377,7 +377,7 @@ export default class Level {
     this.ctx.fillStyle = 'BROWN';
     this.ctx.fillRect(
       0, 
-      this.dimensions.height - 155, 
+      this.dimensions.height - 1, 
       this.dimensions.width, 
       155
     );
