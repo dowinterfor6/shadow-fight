@@ -57,6 +57,14 @@ export default class Arena {
       dy: 50
     };
 
+    this.soundObj = document.createElement("audio");
+    this.soundObj.src = 'frontend/assets/audio/ui-ost.mp3';
+    this.soundObj.setAttribute("preload", "auto");
+    this.soundObj.setAttribute("controls", "none");
+    this.soundObj.setAttribute("loop", "true");
+    this.soundObj.style.display = "none";
+    document.body.appendChild(this.soundObj);
+
     this.drawBackground = this.drawBackground.bind(this);
     this.drawHelp = this.drawHelp.bind(this);
     this.handlePlay = this.handlePlay.bind(this);
@@ -143,8 +151,8 @@ export default class Arena {
   
       let mute = new Image();
       this.sound ? 
-        mute.src = '/frontend/assets/images/mute.png' :
-        mute.src = '/frontend/assets/images/speaker.png'
+      mute.src = '/frontend/assets/images/speaker.png':
+      mute.src = '/frontend/assets/images/mute.png'
       mute.onload = () => {
         this.ctx.drawImage(mute, this.dimensions.width - 130, 20, 50, 50);
       };
@@ -282,6 +290,11 @@ export default class Arena {
     if (clickPos.x >= this.soundPos.x && clickPos.x <= this.soundPos.x + this.soundDimensions.dx) {
       if (clickPos.y >= this.soundPos.y && clickPos.y <= this.soundPos.y + this.soundDimensions.dy) {
         this.sound = !this.sound;
+        if (this.sound) {
+          this.soundObj.play();
+        } else {
+          this.soundObj.pause();
+        }
         this.drawBackground();
       }
     }
