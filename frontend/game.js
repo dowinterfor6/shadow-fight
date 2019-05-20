@@ -139,20 +139,20 @@ export default class Arena {
     this.ctx.canvas.addEventListener('mousedown', this.handlePlay);
 
     let background = new Image();
-    background.src = '/frontend/assets/images/start-background.jpg';
+    background.src = 'frontend/assets/images/start-background.jpg';
     background.onload = () => {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
       
       let help = new Image();
-      help.src = '/frontend/assets/images/help.png';
+      help.src = 'frontend/assets/images/help.png';
       help.onload = () => {
         this.ctx.drawImage(help, this.dimensions.width - 70, 20, 50, 50);
       };
   
       let mute = new Image();
       this.sound ? 
-      mute.src = '/frontend/assets/images/speaker.png':
-      mute.src = '/frontend/assets/images/mute.png'
+      mute.src = 'frontend/assets/images/speaker.png':
+      mute.src = 'frontend/assets/images/mute.png'
       mute.onload = () => {
         this.ctx.drawImage(mute, this.dimensions.width - 130, 20, 50, 50);
       };
@@ -161,7 +161,7 @@ export default class Arena {
       this.ctx.fillStyle = 'WHITE';
   
       let header = new Image();
-      header.src = '/frontend/assets/images/header-white.png';
+      header.src = 'frontend/assets/images/header-white.png';
       header.onload = () => {
         this.ctx.drawImage(
           header, 

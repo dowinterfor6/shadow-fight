@@ -192,7 +192,7 @@ export default class Avatar {
       this.keypressPOJO[key] = false;
     });
     this.spriteSheet = new Image();
-    this.spriteSheet.src = '/frontend/assets/images/ryu-sprite-sheet.png';
+    this.spriteSheet.src = 'frontend/assets/images/ryu-sprite-sheet.png';
 
     this.animationTimer = 0;
 
