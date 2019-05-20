@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "webpack",
-    "webpack": "webpack --watch --mode=development"
+    "webpack": "webpack --watch --mode=development",
+    "start": "node bundle.js"
   },
   "repository": {
     "type": "git",
