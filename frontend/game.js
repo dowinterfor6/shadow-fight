@@ -1,14 +1,6 @@
 import Level from "./level";
 import Avatar from './avatar';
 
-const COLOR_PALETTE = {
-  PRIMARY: '#00070A',
-  SECONDARY: '#294552',
-  TERTIARY: '#597884',
-  QUATERNARY: '#9EB9B3',
-  QUINTERNARY: '#ACC4CE'
-};
-
 const AVATAR_CONSTANTS = {
   AVATAR_DIMENSIONS: {
     width: 150,
