@@ -1,3 +1,8 @@
+a {
+  color: black;
+  user-select: none;
+}
+
 body {
   height: 100vh;
   width: 100vw;
@@ -25,6 +30,7 @@ h5 {
   font-weight: 300;
   margin: 0;
   text-transform: uppercase;
+  user-select: none;
 }
 
 h1 {
