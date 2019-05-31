@@ -4,7 +4,16 @@ Shadow fight is an action game where the player is matched up against an AI and 
 
 Users will take control of an avatar with basic movement, jump and crouch, and have the ability to attack the enemy. The model hitbox will change depending on the avatar position, as well as if they are crouching, and whenever an attack lands (simple collision won't count), damage is done. The AI will perform random movement/attacks, but may implement algorithmic combos.
 
-## Functionality & MVP
+## Features
+Given the time constraint, only the basic features have been implemented. A re/starting screen has been implemented with controls to un/mute the background soundtrack, and a modal help display to show controls and credits. Upon clicking, the user starts the game with two avatars facing off against each other with a time limit of 120 seconds to beat each other, otherwise the game will time out and result in a draw. 
+
+![start](https://github.com/dowinterfor6/shadow-fight/blob/master/docs/images/starting_page.png)
+
+The actual gameplay is limited to punching only, and both sprites are sourced from Deviantart as Ryu. Controls are for 2 players, locally, on a full sized keyboard with a numpad. Jumping, idle, walking, and attacking have unique animations.
+
+![game](https://github.com/dowinterfor6/shadow-fight/blob/master/docs/images/gameplay_screenshot.png)
+
+## Design: Functionality & MVPs
 Shadow Fight will have basic MVPs that must be met:
 * User's avatar can move back and forth, and can jump/crouch
 * Avatar can basic attack and deal damage
