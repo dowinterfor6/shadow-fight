@@ -29,6 +29,48 @@ In addition, some QoL or extra features:
 * Timer
 * Finishing moves
 
+## Timer Circle (Moving "slice")
+```Javascript
+// frontend/level.js
+drawTimerDisplay() {
+   this.ctx.beginPath();
+   this.ctx.fillStyle = COLOR_PALETTE.QUATERNARY;
+   this.ctx.arc(
+     this.dimensions.width / 2,
+     LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5,
+     LEVEL_CONSTANTS.TIMER_RADIUS,
+     - 0.5 * Math.PI,
+     (LEVEL_CONSTANTS.MAX_TIME - this.time)
+     * 2 * Math.PI / LEVEL_CONSTANTS.MAX_TIME
+     - 0.5 * Math.PI
+   );
+   this.ctx.lineTo(this.dimensions.width / 2,
+     LEVEL_CONSTANTS.TIMER_TEXT_HEIGHT - 5
+   );
+   this.ctx.fill();
+ }
+```
+A deceptively simple feature, I wanted to manually implement a timer circle that represented the remaining time via proportion of a full circle (think, slices of pizza being taken away every few seconds). Without referring to libraries, the current design utilized some math to figure out where the lines should be drawn in order for the display to function correctly. Initially, the interpretation of the arc was understood differently, creating a segment of the circle instead of an actual arc, however things became much simpler when the ctx.arc was being used properly. Alongside the health bars with angled ends, these two methods proved to be the most challenging, not because of the sheer difficulty of the mathematics, nor the complexity of the coding language, but rather the implementation of both.
+
+## Avatar state
+```Javascript
+// frontend/avatar.js
+this.state = {
+  health: AVATAR_CONSTANTS.MAX_HEALTH,
+  basicAttacking: false,
+  damageDone: false,
+  basicAttackHitbox: {
+    w: AVATAR_CONSTANTS.AVATAR_DIMENSIONS.width / 2 + 40,
+    h: 10
+  },
+  basicAttackDamage: 10,
+  facing: playerNum === 1 ? 1 : -1,
+  basicAttackKeycode: playerNum === 1 ? 74 : 97,
+  movement: 'idle'
+}
+```
+Taking inspiration from React/Redux, implementing a POJO representing the general state of an avatar instance proved to be helpful as there were too many separate instance variables to keep track of. This is set as an initialization, similar to the initial state being set in React components. Keypresses are recorded and placed in another POJO to be carried out and displayed as soon as possible, as well as to prevent overlap in multiple keypresses of the same key. Another important feature is the "facing" variable, which is set based on which player the avatar instance represents, e.g. Player 1 always faces right, and starts on the left, while Player 2 always faces left, and starts on the right.
+
 ## Wireframes
 The game itself should take up most of the screen, with a basic menu screen as an introduction, with links to my Github and LinkedIn in a separate section. Upon starting, the game should bring you into a screen typical of most fighting games, a basic 2D 'arena' with health bars displayed at the top, and a timer (potentially). The game should be able to be paused mid fight and continued whenever. 
 
