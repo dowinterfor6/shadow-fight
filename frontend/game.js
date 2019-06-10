@@ -15,7 +15,6 @@ export default class Arena {
     this.gameOver = true;
     this.paused = false;
     this.sound = false;
-    this.helpModal = false;
     this.winner = null;
 
     this.documentOffsetX = (document.body.clientWidth - this.dimensions.width) / 2;
@@ -40,19 +39,10 @@ export default class Arena {
     };
 
     this.soundPos = {
-      x: this.dimensions.width - 130,
-      y: 20
-    };
-    this.soundDimensions = {
-      dx: 50,
-      dy: 50
-    };
-
-    this.helpPos = {
       x: this.dimensions.width - 70,
       y: 20
     };
-    this.helpDimensions = {
+    this.soundDimensions = {
       dx: 50,
       dy: 50
     };
@@ -66,11 +56,9 @@ export default class Arena {
     document.body.appendChild(this.soundObj);
 
     this.drawBackground = this.drawBackground.bind(this);
-    this.drawHelp = this.drawHelp.bind(this);
     this.handlePlay = this.handlePlay.bind(this);
     this.handlePause = this.handlePause.bind(this);
     this.handleMute = this.handleMute.bind(this);
-    this.handleHelp = this.handleHelp.bind(this);
     this.handleAttack = this.handleAttack.bind(this);
     this.handleModal = this.handleModal.bind(this);
 
@@ -97,10 +85,8 @@ export default class Arena {
   animate() {
     if (!this.gameOver) {
       this.ctx.canvas.removeEventListener('mousedown', this.handleMute);
-      this.ctx.canvas.removeEventListener('mousedown', this.handleHelp);
       this.ctx.canvas.addEventListener('mousedown', this.handlePause);
-      // document.addEventListener('keydown', this.handleAttack);
-      // TODO: TEMPORARY
+
       if (this.paused) {
         cancelAnimationFrame(this.animationFrame);
         this.level.animate(this.player1.state.health, this.player2.state.health, true);
@@ -125,7 +111,6 @@ export default class Arena {
       }
     } else {
       this.ctx.canvas.addEventListener('mousedown', this.handleMute);
-      this.ctx.canvas.addEventListener('mousedown', this.handleHelp);
       this.ctx.canvas.removeEventListener('mousedown', this.handlePause);
       cancelAnimationFrame(this.animationFrame);
       this.ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -142,19 +127,13 @@ export default class Arena {
     background.src = 'frontend/assets/images/start-background.jpg';
     background.onload = () => {
       this.ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
-      
-      let help = new Image();
-      help.src = 'frontend/assets/images/help.png';
-      help.onload = () => {
-        this.ctx.drawImage(help, this.dimensions.width - 70, 20, 50, 50);
-      };
   
       let mute = new Image();
       this.sound ? 
       mute.src = 'frontend/assets/images/speaker.png':
       mute.src = 'frontend/assets/images/mute.png'
       mute.onload = () => {
-        this.ctx.drawImage(mute, this.dimensions.width - 130, 20, 50, 50);
+        this.ctx.drawImage(mute, this.dimensions.width - 70, 20, 50, 50);
       };
   
       this.ctx.textAlign = 'center';
@@ -214,48 +193,6 @@ export default class Arena {
     
   }
 
-  drawHelp() {
-    this.ctx.canvas.addEventListener('mousedown', this.handleModal);
-
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
-
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    this.ctx.fillRect(120, 60, this.dimensions.width - 240, this.dimensions.height - 120);
-
-    this.ctx.textAlign = 'left';
-    this.ctx.font = '56px Arial';
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillText('How to play:', 210, 120);
-
-    this.ctx.font = '24px Trebuchet MS';
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillText('Player 1: W = Jump, A = Left, D = Right, J = Attack', 210, 150);
-    this.ctx.fillText('Player 2: ^ = Jump, < = Left, > = Right, 1 (numpad) = Attack', 210, 180);
-    this.ctx.fillText('You have until the time runs out to defeat the other player!', 210, 210);
-    this.ctx.fillText('Move erratically and jump to avoid attacks and outsmart your opponent.', 210, 240);
-
-    this.ctx.font = '56px Arial';
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillText('Credits:', 210, 290);
-
-    this.ctx.font = '18px Trebuchet MS';
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillText('Starting screen: http://www.avoidingthepuddle.com/news/2015/12/21/...', 210, 320);
-    this.ctx.fillText('complete-batch-of-tekken-7-fated-retribution-images-in-high.html', 210, 340);
-    this.ctx.fillText('Sakura petals: https://www.123rf.com/photo_109774081_stock-vector-...', 210, 360);
-    this.ctx.fillText('sakura-petals-falling-down-romantic-pink-silky-medium-flowers-sparse-...', 210, 380);
-    this.ctx.fillText('flying-cherry-petals-top-gradie.html', 210, 400);
-    this.ctx.fillText('Snowflakes: https://www.freepik.com/free-photos-vectors/christmas...', 210, 420);
-    this.ctx.fillText('(Christmas vector created by freepik)', 210, 440);
-    this.ctx.fillText('Arena background: https://wallpapercave.com/w/wp2603480', 210, 460);
-    this.ctx.fillText('Ryu spritesheet: https://www.deviantart.com/sil3nt-j/art/...', 210, 480);
-    this.ctx.fillText('Ryu-Street-Fighter-1-Sprite-Sheet-769011713 (by sil3nt-j)', 210, 500);
-    this.ctx.fillText('Help and sound icons: https://www.flaticon.com (made by Freepik)', 210, 520);
-    this.ctx.fillText('Music: Dragon Ball Super - Ultra instinct | Instrumental Epic Rock COVER', 210, 540);
-    this.ctx.fillText('Friedrich Habetler Music', 210, 560);
-  }
-
   handlePlay(e) {
     let clickPos = {
       x: e.pageX - this.documentOffsetX,
@@ -301,23 +238,6 @@ export default class Arena {
       }
     }
   }
-  
-  handleHelp(e) {
-    let clickPos = {
-      x: e.pageX - this.documentOffsetX,
-      y: e.pageY - this.documentOffsetY - 80
-    }
-    if (clickPos.x >= this.helpPos.x && clickPos.x <= this.helpPos.x + this.helpDimensions.dx) {
-      if (clickPos.y >= this.helpPos.y && clickPos.y <= this.helpPos.y + this.helpDimensions.dy) {
-        this.helpModal = !this.helpModal;
-        if (this.helpModal) {
-          this.drawHelp();
-        } else {
-          this.drawBackground();
-        }
-      }
-    }
-  }
 
   handleAttack(e) {
     switch (e.keyCode) {
@@ -338,7 +258,6 @@ export default class Arena {
     if (clickPos.x < 120 || clickPos.x > this.dimensions.width - 120
       || clickPos.y < 60 || clickPos.y > this.dimensions.height - 60) {
       this.ctx.canvas.removeEventListener('mousedown', this.handleModal);
-      this.helpModal = !this.helpModal;
       this.animate();
     }
   }
