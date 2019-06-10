@@ -73,3 +73,24 @@
   justify-content: center;
   align-items: center;
 }
+
+/* Modal */
+.modal-background {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0,0,0,0.7);
+}
+
+.modal-child {
+  position: absolute;
+  top: calc((100vh - 800px) / 2);
+  left: calc(50vw - 400px);
+  height: 800px;
+  width: 800px;
+  background: white;
+}
+
+.hidden {
+  display: none;
+}
