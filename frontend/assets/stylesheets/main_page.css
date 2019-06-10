@@ -106,6 +106,24 @@
   height: auto;
 }
 
+.help-open {
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.player1-controls,
+.player2-controls
+{
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
 .hidden {
   display: none;
 }
