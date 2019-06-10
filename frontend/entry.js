@@ -20,9 +20,22 @@ const attachEventListeners = () => {
 
 const openModal = (type, modalBackground) => {
   modalBackground.classList.remove('hidden');
-  console.log(type);
+  switch (type) {
+    case 'demo':
+      let demoDisplay = document.getElementsByClassName('demo-open')[0];
+      demoDisplay.classList.remove('hidden');
+      break;
+    case 'help':
+      let helpDisplay = document.getElementsByClassName('help-open')[0];
+      helpDisplay.classList.remove('hidden');
+      break;
+  }
 }
 
 const closeModal = (e) => {
   e.currentTarget.classList.add('hidden');
+  let demoDisplay = document.getElementsByClassName('demo-open')[0];
+  demoDisplay.classList.add('hidden');
+  let helpDisplay = document.getElementsByClassName('help-open')[0];
+  helpDisplay.classList.add('hidden');
 }
