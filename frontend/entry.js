@@ -14,11 +14,12 @@ const attachEventListeners = () => {
 
   modalChild.addEventListener('mousedown', (e) => e.stopPropagation());
   modalBackground.addEventListener('mousedown', (e) => closeModal(e));
-  demoIcon.addEventListener('mousedown', () => openModal('demo'));
-  helpIcon.addEventListener('mousedown', () => openModal('help'));
+  demoIcon.addEventListener('mousedown', () => openModal('demo', modalBackground));
+  helpIcon.addEventListener('mousedown', () => openModal('help', modalBackground));
 }
 
-const openModal = (type) => {
+const openModal = (type, modalBackground) => {
+  modalBackground.classList.remove('hidden');
   console.log(type);
 }
 

@@ -84,11 +84,26 @@
 
 .modal-child {
   position: absolute;
-  top: calc((100vh - 800px) / 2);
+  top: calc((100vh - 750px) / 2);
   left: calc(50vw - 400px);
-  height: 800px;
+  height: 750px;
   width: 800px;
+  box-sizing: border-box;
   background: white;
+}
+
+.demo-open {
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.demo-open img {
+  width: 100%;
+  height: auto;
 }
 
 .hidden {
