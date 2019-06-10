@@ -15,15 +15,41 @@
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .icons {
-  height: 100%;
-  width: 75px;
+  height: 50px;
+  width: 450px;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-end;
+}
+
+.demo-icon-container,
+.help-icon-container
+{
+  height: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-gap: 5px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.demo-icon-container:hover,
+.help-icon-container:hover
+{
+  color: rgb(100, 100, 100);
+}
+
+.icons a {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
 }
 
 .icons i {
