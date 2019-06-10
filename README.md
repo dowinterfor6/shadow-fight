@@ -7,7 +7,7 @@ Users will take control of an avatar with basic movement, jump and crouch, and h
 ## Features
 Given the time constraint, only the basic features have been implemented. A re/starting screen has been implemented with controls to un/mute the background soundtrack, and a modal help display to show controls and credits. Upon clicking, the user starts the game with two avatars facing off against each other with a time limit of 120 seconds to beat each other, otherwise the game will time out and result in a draw. 
 
-![start](https://github.com/dowinterfor6/shadow-fight/blob/master/docs/images/starting_page.png)
+![start](https://github.com/dowinterfor6/shadow-fight/blob/master/docs/images/starting-page.png)
 
 The actual gameplay is limited to punching only, and both sprites are sourced from Deviantart as Ryu. Controls are for 2 players, locally, on a full sized keyboard with a numpad. Jumping, idle, walking, and attacking have unique animations.
 
