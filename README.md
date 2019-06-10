@@ -11,7 +11,7 @@ Given the time constraint, only the basic features have been implemented. A re/s
 
 The actual gameplay is limited to punching only, and both sprites are sourced from Deviantart as Ryu. Controls are for 2 players, locally, on a full sized keyboard with a numpad. Jumping, idle, walking, and attacking have unique animations.
 
-![game](https://github.com/dowinterfor6/shadow-fight/blob/master/docs/gifs/gameplay2.gif)
+![game](https://github.com/dowinterfor6/shadow-fight/blob/master/docs/gifs/gameplay.gif)
 
 ## Timer Circle (Moving "slice")
 ```Javascript
