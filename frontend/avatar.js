@@ -180,7 +180,7 @@ export default class Avatar {
       },
       basicAttackDamage: 10,
       facing: playerNum === 1 ? 1 : -1,
-      basicAttackKeycode: playerNum === 1 ? 74 : 97,
+      basicAttackKeycode: playerNum === 1 ? 74 : 16,
       movement: 'idle'
     }
 
@@ -355,7 +355,6 @@ export default class Avatar {
   }
 
   handleAttack(e) {
-    console.log(e.keyCode);
     if (e.keyCode === this.state.basicAttackKeycode) {
       this.basicAttack();
     }
