@@ -355,6 +355,7 @@ export default class Avatar {
   }
 
   handleAttack(e) {
+    console.log(e.keyCode);
     if (e.keyCode === this.state.basicAttackKeycode) {
       this.basicAttack();
     }
