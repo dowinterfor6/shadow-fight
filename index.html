@@ -11,16 +11,62 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Oxygen:300,400" rel="stylesheet">
   <script src="bundle.js"></script>
-  <!-- Freepik snowflake credit -->
 </head>
 <body>
   <main id="root">
+    <section class="modal-background hidden">
+      <section class="modal-child">
+        <section class="demo-open hidden">
+          <div class="demo-description">
+            <h2>Gameplay Demo</h2>
+            <h4>Note: Game is designed for a full keyboard with numpad</h4>
+          </div>
+          <img src="./docs/gifs/gameplay.gif" alt="gameplay">
+        </section>
+        <section class="help-open hidden">
+          <h2>Controls</h2>
+          <div class="player1-controls">
+            <h4>
+              Player 1: 
+            </h4>
+            <h5>
+              W A S D --- (up, left, down, right) movement
+            </h5>
+            <h5>
+              J --- attack
+            </h5>
+          </div>
+          <div class="player2-controls">
+            <h4>
+              Player 2: 
+            </h4>
+            <h5>
+              ↑ ← ↓ → --- (up, left, down, right) movement
+            </h5>
+            <h5>
+              (numpad) 1 --- attack
+            </h5>
+          </div>
+        </section>
+      </section>
+    </section>
     <nav class="nav-bar-container">
       <div class="header-text">
         <h1>Shadow Fight</h1>
-        <h3>by dowinterfor6</h3>
       </div>
       <div class="icons">
+        <div class="demo-icon-container">
+          <h5>
+            Gameplay demo
+          </h5>
+          <i class="fas fa-video fa-2x"></i>
+        </div>
+        <div class="help-icon-container">
+          <h5>
+            Controls
+          </h5>
+          <i class="far fa-question-circle fa-2x"></i>
+        </div>
         <a href="https://github.com/dowinterfor6/shadow-fight">
           <i class="fab fa-github-square fa-2x"></i>
         </a>
